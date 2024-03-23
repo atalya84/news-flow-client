@@ -1,0 +1,25 @@
+.not-found-page {
+    background-color: rgb(44,45,64);
+    color: #e7e4e6;
+}
+
+.not-found-page .main-title {
+    font-size: 2em;
+}
+
+.not-found-page .content {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 8%;
+    margin-right: 10%;
+}
+
+.not-found-page .text {
+    font-size: 1em;
+    font-weight: 400;
+}
+
+.not-found-page a:hover {
+    text-decoration: underline;
+}

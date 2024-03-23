@@ -1,0 +1,13 @@
+.navbar {
+    height: 5%;
+    padding: 1.5em 2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(18,21,37);
+    color: #f9b334;
+    z-index: 1;
+    position: relative;
+    box-shadow: 0px 1px 10px 0px #000000bd;
+}
