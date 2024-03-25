@@ -1,6 +1,7 @@
 .not-found-page {
     background-color: rgb(44,45,64);
     color: #e7e4e6;
+    text-align: center;
 }
 
 .not-found-page .main-title {
