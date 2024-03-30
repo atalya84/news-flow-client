@@ -9,6 +9,8 @@
 .not-found-page .text {
     font-size: 1em;
     font-weight: 400;
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
 .not-found-page a {
@@ -34,5 +36,5 @@
 
 .not-found-page h2 {
     font-size: 4vh;
-    color: #add4f5
+    color: whitesmoke
 }
