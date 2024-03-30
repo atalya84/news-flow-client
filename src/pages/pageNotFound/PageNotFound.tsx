@@ -6,7 +6,7 @@ export const PageNotFound: FC = () => {
     const h1Ref = useRef<HTMLHeadingElement>(null);
     return (
         <div className='not-found-page'>
-            <h2>ERR: PAGE NOT FOUND</h2>
+            <h2>PAGE NOT FOUND</h2>
             <div className='message'>
                 <img src={notFoundIcon} alt="404 missing page" />
                 <div>
