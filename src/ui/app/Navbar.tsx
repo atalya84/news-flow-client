@@ -5,15 +5,15 @@ import { AppLogo } from './AppLogo';
 import { useCallback } from 'react';
 
 export const Navbar = () => {
-    const navigate = useNavigate();
-    const goToHomePage = useCallback(() => navigate('/'), []);
+	const navigate = useNavigate();
+	const goToHomePage = useCallback(() => navigate('/'), []);
 
-    return (
-        <>
-            <div className="navbar">
-                <AppLogo onClick={goToHomePage} /> 
-            </div>
-            <Outlet />
-        </>
-    );
+	return (
+		<>
+			<div className="navbar">
+				<AppLogo onClick={goToHomePage} />
+			</div>
+			<Outlet />
+		</>
+	);
 };
