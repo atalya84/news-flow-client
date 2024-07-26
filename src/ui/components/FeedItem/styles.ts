@@ -39,6 +39,11 @@ export const headlineStyle: SxProps = {
 }
 
 export const linkStyle: SxProps = {
+	color: '#DDDDDD',
+	textDecoration: 'none',
+	':hover': {
+		textDecorationLine: 'underline'
+	},
 	display: '-webkit-box',
 	overflow: 'hidden',
 	WebkitBoxOrient: 'vertical',
