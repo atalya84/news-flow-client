@@ -14,22 +14,25 @@ import './styles.ts';
 import { cardBoxStyle, cardContentStyle, cardStyle, headlineStyle, linkStyle } from './styles.ts';
 import {Comment, Share} from '@mui/icons-material'
 import { IconButton } from '../IconButton/IconButton.tsx';
+import { IPost } from '../../../types/feed.types.ts';
+import { useNavigate } from 'react-router-dom';
 
-const FeedItem: FC = () => {
+const FeedItem: FC<{post: IPost}> = ({post}) => {
+	const navigate = useNavigate();
 
 	return (
 		<>
-			<Card sx={cardStyle}>
+			<Card sx={cardStyle} onClick={() => navigate(`/posts/${post._id}`)}>
 				<Box sx={cardBoxStyle}>
 					<Box sx={cardContentStyle}>
 						<Typography component="div" variant="h6" sx={headlineStyle}>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in mauris turpis. Nam porttitor urna et odio finibus aliquet. Nullam sed egestas diam. Donec maximus, dolor interdum porttitor dapibus, mauris augue lobortis urna, id finibus nibh risus id neque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vitae tortor et dui tincidunt malesuada lacinia vel quam.
+							{post.title}
 						</Typography>
-						<Chip label="Israel" variant='filled' size='small' sx={{color: 'white', backgroundColor: "#555555"}}/>
+						<Chip label={post.country || "No Country"} variant='filled' size='small' sx={{color: 'white', backgroundColor: "#555555"}}/>
 					</Box>
-					<Link href="https://www.reddit.com/r/worldnews/" target="_blank" rel="noopener" sx={linkStyle}>https://www.reddit.com/r/worldnews/</Link>
+					{post.source && <Link href={post.source} target="_blank" rel="noopener" sx={linkStyle}>{post.source}</Link>}
 					<Box sx={{ display: 'flex', justifyContent: 'flex-start'}}>
-						<IconButton icon={<Comment />} label={42} />
+						<IconButton icon={<Comment />} label={post.comments?.length || 0} />
 						<IconButton icon={<Share />} label={'Share'} />
 					</Box>
 				</Box>
