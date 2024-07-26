@@ -1,0 +1,43 @@
+
+.page-loading-animation {
+    display: flex;
+    justify-content: center;
+    height: 80vh; /* 100% of the viewport height */
+    width: 100vw;
+    align-items: center;
+}
+
+.text-field {
+    width: 60%;
+    margin-bottom: 20px !important;
+  }
+  
+  .text-field .MuiInput-root {
+    color: #121525;
+    font-family: Arial;
+    background-color: #fafaf3;
+    border-radius: 20px;
+    height: 45px;
+  }
+  
+  .text-field .MuiInput-root:before {
+    border-color: #121525;
+    width: 89%;
+    margin-left: 8%;
+  }
+  
+  .text-field .MuiInput-root:after {
+    border-color: #f9b334;
+    width: 89%;
+    margin-left: 8%;
+    border-width: 3px; 
+  }
+  
+  .text-field .MuiInputLabel-standard {
+    color: #fafaf3;
+  }
+  
+  .text-field .MuiInputLabel-standard.Mui-focused {
+    color: #fafaf3;
+  }
+  

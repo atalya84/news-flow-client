@@ -1,0 +1,68 @@
+.Page {
+    text-align: center;
+    background-color: #011724;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    display: flex;
+  }
+  
+  .login-form {
+    width: 50%;
+    padding: 2em 4em;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #f9b334;
+    border-radius: 20px;
+  }
+  
+  .login-form .logo-container {
+    margin-right: auto;
+  }
+  
+  .Page .login-card {
+    display: flex;
+    background-color: #011724;
+    flex-direction: row;
+    min-width: 80%;
+    position: relative;
+  }
+  
+  .login-card .right-side {
+    position: relative;
+    height: auto; /* Maintain aspect ratio */
+    max-width: 800px; /* Set a maximum width to avoid excessive enlargement */
+    display: block; /* Ensures the image is displayed as a block element */
+    margin: 0 auto; /* Center the image horizontally */
+  }
+  
+  .Page .login {
+    border-radius: 20px;
+    background-color: transparent; 
+    color: #f9b334;
+    border: 2px solid #f9b334;
+  }
+  
+  .Page .login:hover {
+    background-color: #f9b334; 
+    color: whitesmoke;
+  }
+  
+  .Page .login:disabled {
+    border: 2px solid grey;
+    color: grey;
+  }
+  
+  .Page h1 {
+    color: whitesmoke;
+  }
+  
+  .Page .text {
+    color: whitesmoke;
+  }
+  
+  .Page .switch {
+    margin-top: 20px;
+  }
