@@ -32,10 +32,12 @@
   
   .login-card .right-side {
     position: relative;
-    height: auto; /* Maintain aspect ratio */
-    max-width: 800px; /* Set a maximum width to avoid excessive enlargement */
-    display: block; /* Ensures the image is displayed as a block element */
-    margin: 0 auto; /* Center the image horizontally */
+    height: auto;
+    max-width: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
   }
   
   .Page .login {
