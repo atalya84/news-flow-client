@@ -13,6 +13,7 @@ import { AppLogo } from '../../ui';
 import { FormProps } from '../../types/Props';
 import { FieldValidation } from '../../types/Auth';
 import DropFileInput from '../../ui/Auth/ImageInput';
+import { uploadPhoto } from '../../services/file-service';
 
 const MIN_PASSWORD_DIGITS = 8;
 
@@ -21,7 +22,7 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
-    const [imageInfo, setImageInfo] = useState<File | null>(null); // State for image URL
+    const [imageInfo, setImageInfo] = useState<File | null>(null);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -29,19 +30,36 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
 
     const [nameValid, setNameValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
     const [passConfValid, setPassConfValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
+    const [imageValid, setImageValid] = useState<boolean>(true);
 
     const isEmailValid = (email: string): boolean => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(email);
     };
 
+    const uploadImage = async (): Promise<string> => {
+        try {
+            const formData: FormData = new FormData()
+            formData.append('file', imageInfo!, imageInfo?.name);
+            const url = await uploadPhoto(formData);
+            if (!url) {
+                console.log('image was not uploaded')
+            }
+            return url
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            return '';
+        }
+    }
+
     const handleForm = useCallback(async () => {
         setIsLoading(true);
+        const imageUrl = await uploadImage()
         const formData: FormData = new FormData()
         formData.append('email', email);
         formData.append('password', password);
         formData.append('name', name);
-        // formData.append('imgUrl', imageInfo, imageInfo?.name);
+        formData.append('imgUrl', imageUrl);
         // await onClick(formData);
         setIsLoading(false);
       }, [email, password, name, imageInfo]);
@@ -57,6 +75,7 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
             setEmailValid({ isValid: true, errorText: ''});
             formIsValid += 1
         }
+
         if (password.length === 0) {
             setPasswordValid({ isValid: false, errorText: 'Password can\'t be empty'});
         } else if (password.length < MIN_PASSWORD_DIGITS) {
@@ -67,6 +86,14 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
         }
 
         if (type === 'Sign Up') {
+            
+            if (!imageInfo) {
+                setImageValid(false)
+            } else {
+                setImageValid(true)
+                formIsValid += 1
+            }
+
             if (name.length === 0) {
                 setNameValid({ isValid: false, errorText: 'User Name can\'t be empty'});
             } else {
@@ -81,7 +108,7 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
                 formIsValid += 1
             }
             
-            if (formIsValid === 4) {
+            if (formIsValid === 5) {
                 handleForm()
             }
         } else if (formIsValid === 2) {
@@ -125,7 +152,7 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
             )}
             {!isLogin && (
                 <>
-                    <DropFileInput onChange={setImageInfo} />
+                    <DropFileInput onChange={setImageInfo} error={!imageValid} />
                     <TextInput icon={<AccountCircleIcon />} title="Enter your name" value={name} onChange={setName} isValueValid={nameValid.isValid} errorText={nameValid.errorText} />
                 </>
             )}

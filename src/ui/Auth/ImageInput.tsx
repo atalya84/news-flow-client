@@ -3,7 +3,7 @@ import { ImageInputProps } from '../../types/Props';
 
 import '../default.css';
 
-const DropFileInput: FC<ImageInputProps> = ({ onChange }) => {
+const DropFileInput: FC<ImageInputProps> = ({ onChange, error }) => {
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 
     const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -17,6 +17,7 @@ const DropFileInput: FC<ImageInputProps> = ({ onChange }) => {
     const onFileDrop = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newFile = event.target.files?.[0];
         if (newFile) {
+            onChange(newFile);
             if (newFile.type === 'image/jpeg' || newFile.type === 'image/png') {
                 const reader = new FileReader();
                 reader.onloadend = () => {
@@ -39,9 +40,11 @@ const DropFileInput: FC<ImageInputProps> = ({ onChange }) => {
                 <div className="drop-file-input__label">
                     {imageSrc ? (
                         <img src={imageSrc} alt="Selected" className='selected-image'/>
+                    ) : error ? (
+                        <img src={"imageError.png"} alt="Error" className="preview-image" />
                     ) : (
                         <img src={"addImage.png"} alt="Upload" className="preview-image"  />
-                    )}                    
+                    )}               
                 </div>
                 <input type="file" accept="image/jpeg, image/png" onChange={onFileDrop} />
             </div>
