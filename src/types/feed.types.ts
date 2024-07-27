@@ -3,12 +3,14 @@ export interface IPost {
 	title: string;
 	source: string;
 	country: string;
-	body: string;
 	imgUrl: string;
-	comments: IComment[];
 	userId: string;
 	created: string;
+	body?: string;
+	comments?: IComment[];
 }
+ 
+export type IPostInput = Pick<IPost, "title" | "source" | "country" | "imgUrl" | "userId" | "body" | "comments">
 
 export interface IComment {
 	text: string;
