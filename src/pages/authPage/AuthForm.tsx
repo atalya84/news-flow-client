@@ -12,6 +12,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import { AppLogo } from '../../ui';
 import { FormProps } from '../../types/Props';
 import { FieldValidation } from '../../types/Auth';
+import DropFileInput from '../../ui/Auth/ImageInput';
 
 const MIN_PASSWORD_DIGITS = 8;
 
@@ -123,7 +124,10 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
                 </span>
             )}
             {!isLogin && (
-                <TextInput icon={<AccountCircleIcon />} title="Enter your name" value={name} onChange={setName} isValueValid={nameValid.isValid} errorText={nameValid.errorText} />
+                <>
+                    <DropFileInput onChange={setImageInfo} />
+                    <TextInput icon={<AccountCircleIcon />} title="Enter your name" value={name} onChange={setName} isValueValid={nameValid.isValid} errorText={nameValid.errorText} />
+                </>
             )}
             <TextInput icon={<AlternateEmailIcon />} title="Email" type="email" value={email} onChange={setEmail} isValueValid={emailValid.isValid} errorText={emailValid.errorText}/>
 
@@ -131,9 +135,6 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
             {!isLogin && (
                 <TextInput icon={<LockIcon />} title="Confirm Password" value={confirmPassword} onChange={setConfirmPassword} isValueValid={passConfValid.isValid} errorText={passConfValid.errorText}/>
             )}
-            {/* {!isLogin && (
-                <ImageInput onChange={setImageInfo} />
-            )} */}
 
             <LoadingButton
                 className='login'

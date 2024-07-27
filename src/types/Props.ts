@@ -21,3 +21,7 @@ export interface FormProps {
     passwordValid: FieldValidation;
     setPasswordValid: React.Dispatch<React.SetStateAction<FieldValidation>>;
 }
+
+export interface ImageInputProps {
+    onChange: (imageUrl: any | null) => void;
+}
