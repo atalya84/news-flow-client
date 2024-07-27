@@ -37,7 +37,7 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
         return regex.test(email);
     };
 
-    const uploadImage = async (): Promise<string> => {
+    const handleProfilePic = async (): Promise<string> => {
         try {
             const formData: FormData = new FormData()
             formData.append('file', imageInfo!, imageInfo?.name);
@@ -54,13 +54,13 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
 
     const handleForm = useCallback(async () => {
         setIsLoading(true);
-        const imageUrl = await uploadImage()
+        const imageUrl = await handleProfilePic()
         const formData: FormData = new FormData()
         formData.append('email', email);
         formData.append('password', password);
         formData.append('name', name);
         formData.append('imgUrl', imageUrl);
-        // await onClick(formData);
+        await onClick(formData);
         setIsLoading(false);
       }, [email, password, name, imageInfo]);
 
@@ -160,7 +160,7 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
 
             <TextInput icon={<LockIcon />} title="Password" value={password} type='password' onChange={setPassword} isValueValid={passwordValid.isValid} errorText={passwordValid.errorText}/>
             {!isLogin && (
-                <TextInput icon={<LockIcon />} title="Confirm Password" value={confirmPassword} onChange={setConfirmPassword} isValueValid={passConfValid.isValid} errorText={passConfValid.errorText}/>
+                <TextInput icon={<LockIcon />} title="Confirm Password" type='password' value={confirmPassword} onChange={setConfirmPassword} isValueValid={passConfValid.isValid} errorText={passConfValid.errorText}/>
             )}
 
             <LoadingButton
