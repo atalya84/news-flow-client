@@ -11,13 +11,12 @@ export const cardStyle: SxProps = {
 	paddingY: '5px',
 	marginY: '5px',
 	boxShadow: 'none',
-	height: '18vh',
 	':hover': {
 		backgroundColor: '#77777711',
 	},
 };
 
-export const cardBoxStyle: SxProps = { 
+export const cardBoxStyle: SxProps = {
     display: 'flex',
 	flexDirection: 'column',
 	height: "100%",

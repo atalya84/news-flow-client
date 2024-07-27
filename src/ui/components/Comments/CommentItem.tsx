@@ -33,15 +33,15 @@ export const CommentItem: FC<{ comment: IComment }> = ({
 				<>
 					<Grid item xs={12} container alignItems={'center'}>
 						<AccountCircle sx={userIconStyle} />
-						<Typography variant="caption">
-							{'username'}{' '}
+						<Typography variant="subtitle1">
+							{`${user.name} ${user.lastName}`}{' '}
 							<span style={{ color: '#FFFFFF77' }}>
 								• {moment(comment.created).fromNow()}
 							</span>
 						</Typography>
 					</Grid>
 					<Grid item container xs={12} sx={commentBoxStyle}>
-						<Typography variant="body2">{comment.text}</Typography>
+						<Typography variant="body1">{comment.text}</Typography>
 					</Grid>
 				</>
 			)}

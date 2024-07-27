@@ -31,7 +31,7 @@ const FeedItem: FC<{post: IPost}> = ({post}) => {
 						<Chip label={post.country || "No Country"} variant='filled' size='small' sx={{color: 'white', backgroundColor: "#555555"}}/>
 					</Box>
 					{post.source && <Link href={post.source} target="_blank" rel="noopener" sx={linkStyle}>{post.source}</Link>}
-					<Box sx={{ display: 'flex', justifyContent: 'flex-start'}}>
+					<Box sx={{ display: 'flex', justifyContent: 'flex-start', marginTop: '1rem'}}>
 						<IconButton icon={<Comment />} label={post.comments?.length || 0} />
 						<IconButton icon={<Share />} label={'Share'} />
 					</Box>
