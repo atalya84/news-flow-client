@@ -15,7 +15,7 @@ export interface TextFieldProps {
 
 export interface FormProps {
     type: 'Login' | 'Sign Up';
-    onClick: (user: IUser) => Promise<IUser>;
+    onClick: (user: IUser) => Promise<void>;
     onGoogleLogin?: (response: any) => Promise<void>; 
     emailValid: FieldValidation;
     setEmailValid: React.Dispatch<React.SetStateAction<FieldValidation>>;

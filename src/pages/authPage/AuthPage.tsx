@@ -9,6 +9,7 @@ import { CredentialResponse } from '@react-oauth/google';
 import { FieldValidation } from '../../types/Auth';
 import { IUser } from '../../types/User';
 import apiClient from '../../services/api-client';
+import axios from 'axios';
 // import { AuthContext } from '../../context/Context';
 // import { registerGoogle, register } from '../../services/auth/AuthServices';
 
@@ -19,38 +20,43 @@ export const SignUpPage: FC = () => {
     const [passwordValid, setPasswordValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
 
     const onSignUp = useCallback(async (user: IUser) => {
-        return new Promise<IUser>((resolve, reject) => {
+        try{
             console.log("Registering user...")
-            console.log(user)
             apiClient.post("/auth/register", user).then((response) => {
-                console.log(response)
-                resolve(response.data)
-            }).catch((error) => {
-                console.log(error)
-                reject(error)
+                console.log("register successfuly new user:", response)
+                navigate('/')
             })
-        })
+        } catch (error) {
+            console.log("my error", error)
+            if (axios.isAxiosError(error) && error.response?.status === 400) {
+                console.log("Caught 400 error:", error.response.data);
+                setEmailValid({ isValid: false, errorText: 'Email already exists' })
+            } else {
+                console.error('Error logging in:', error);
+                throw error;
+            }
+        }
     }, []);
 
     return <Page type="Sign Up" onClick={onSignUp} emailValid={emailValid} setEmailValid={setEmailValid} passwordValid={passwordValid} setPasswordValid={setPasswordValid} />;
 };
 
 export const LoginPage: FC = () => {
+    const navigate = useNavigate();
     const [emailValid, setEmailValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
     const [passwordValid, setPasswordValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
 
     const onLogin = useCallback(async (user: IUser) => {
-        return new Promise<IUser>((resolve, reject) => {
+        try {
             console.log("Registering user...")
             console.log(user)
             apiClient.post("/auth/login", user).then((response) => {
-                console.log(response)
-                resolve(response.data)
-            }).catch((error) => {
-                console.log(error)
-                reject(error)
+                console.log("logged in user:", response)
+                navigate('/')
             })
-        })
+        }  catch (error) {
+            console.error('Error logging in:', error);
+        }
     }, []);
 
     const onGoogleLogin = useCallback(async (response: CredentialResponse) => {
