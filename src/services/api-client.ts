@@ -1,8 +1,8 @@
-import axios, { CanceledError } from "axios";
+import axios from "axios";
+import {config} from '../config/config.js'
 
-export { CanceledError }
 const apiClient = axios.create({
-    baseURL: process.env.DOMAIN_BASE
+    baseURL: config.BASE_DOMAIN
 });
 
 export default apiClient;

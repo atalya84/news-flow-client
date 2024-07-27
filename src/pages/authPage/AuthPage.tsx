@@ -7,6 +7,8 @@ import { AuthForm } from './AuthForm';
 import { useNavigate } from 'react-router-dom';
 import { CredentialResponse } from '@react-oauth/google';
 import { FieldValidation } from '../../types/Auth';
+import { IUser } from '../../types/User';
+import apiClient from '../../services/api-client';
 // import { AuthContext } from '../../context/Context';
 // import { registerGoogle, register } from '../../services/auth/AuthServices';
 
@@ -16,12 +18,18 @@ export const SignUpPage: FC = () => {
     const [emailValid, setEmailValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
     const [passwordValid, setPasswordValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
 
-    const onSignUp = useCallback(async (formData: FormData) => {
-        try {
-            alert("hello sign up")
-        } catch (e) {
-            console.log('🚀 ~ file: loginPage.tsx ~ onSignUp ~ e', e);
-        }
+    const onSignUp = useCallback(async (user: IUser) => {
+        return new Promise<IUser>((resolve, reject) => {
+            console.log("Registering user...")
+            console.log(user)
+            apiClient.post("/auth/register", user).then((response) => {
+                console.log(response)
+                resolve(response.data)
+            }).catch((error) => {
+                console.log(error)
+                reject(error)
+            })
+        })
     }, []);
 
     return <Page type="Sign Up" onClick={onSignUp} emailValid={emailValid} setEmailValid={setEmailValid} passwordValid={passwordValid} setPasswordValid={setPasswordValid} />;
@@ -31,12 +39,18 @@ export const LoginPage: FC = () => {
     const [emailValid, setEmailValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
     const [passwordValid, setPasswordValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
 
-    const onLogin = useCallback(async (formData: FormData) => {
-        try {
-            alert("hello login")
-        } catch (e) {
-            console.log('🚀 ~ file: loginPage.tsx:38 ~ onLogin ~ e', e);
-        }
+    const onLogin = useCallback(async (user: IUser) => {
+        return new Promise<IUser>((resolve, reject) => {
+            console.log("Registering user...")
+            console.log(user)
+            apiClient.post("/auth/login", user).then((response) => {
+                console.log(response)
+                resolve(response.data)
+            }).catch((error) => {
+                console.log(error)
+                reject(error)
+            })
+        })
     }, []);
 
     const onGoogleLogin = useCallback(async (response: CredentialResponse) => {

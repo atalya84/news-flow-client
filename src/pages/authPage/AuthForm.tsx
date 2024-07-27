@@ -14,6 +14,7 @@ import { FormProps } from '../../types/Props';
 import { FieldValidation } from '../../types/Auth';
 import DropFileInput from '../../ui/Auth/ImageInput';
 import { uploadPhoto } from '../../services/file-service';
+import { IUser } from '../../types/User';
 
 const MIN_PASSWORD_DIGITS = 8;
 
@@ -55,12 +56,13 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
     const handleForm = useCallback(async () => {
         setIsLoading(true);
         const imageUrl = await handleProfilePic()
-        const formData: FormData = new FormData()
-        formData.append('email', email);
-        formData.append('password', password);
-        formData.append('name', name);
-        formData.append('imgUrl', imageUrl);
-        await onClick(formData);
+        const user: IUser = {
+            email: email,
+            name: name,
+            imgUrl: imageUrl,
+            password: password
+        }
+        await onClick(user);
         setIsLoading(false);
       }, [email, password, name, imageInfo]);
 
