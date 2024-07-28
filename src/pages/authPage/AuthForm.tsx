@@ -1,6 +1,6 @@
 import './AuthStyle.css';
 import { FC, useState, useCallback, useEffect, useMemo, ChangeEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
@@ -15,10 +15,12 @@ import { FieldValidation } from '../../types/Auth';
 import DropFileInput from '../../ui/Auth/ImageInput';
 import { uploadPhoto } from '../../services/file-service';
 import { IUser } from '../../types/User';
+import axios from 'axios';
 
 const MIN_PASSWORD_DIGITS = 8;
 
-export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailValid, setEmailValid, passwordValid, setPasswordValid }) => {
+export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin}) => {
+    const navigate = useNavigate()
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -31,6 +33,8 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
 
     const [nameValid, setNameValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
     const [passConfValid, setPassConfValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
+    const [emailValid, setEmailValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
+    const [passwordValid, setPasswordValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
     const [imageValid, setImageValid] = useState<boolean>(true);
 
     const isEmailValid = (email: string): boolean => {
@@ -62,7 +66,16 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
             imgUrl: imageUrl,
             password: password
         }
-        await onClick(user);
+        try {
+            const res = await onClick(user)
+            navigate('/')
+        } catch (error) {
+            if(axios.isAxiosError(error) && error.response?.data === "User already exists") {
+                setEmailValid({isValid: false, errorText: "email already exists"})
+            } else {
+                console.log(error)
+            }
+        }
         setIsLoading(false);
       }, [email, password, name, imageInfo]);
 
