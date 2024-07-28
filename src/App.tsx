@@ -17,6 +17,7 @@ function App() {
   const [user, setUser] = useState<IUser | null>(null)
 
     const setActiveUser = async () => {
+      console.log()
         setUser(await getActiveUser());
     }
 

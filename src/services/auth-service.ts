@@ -26,7 +26,6 @@ export const loginUser = (user: IUser) => {
             localStorage.setItem('refreshToken', response.data.refreshToken);
             localStorage.setItem('accessToken', response.data.accessToken);
             resolve(response.data.user)
-            console.log(localStorage.getItem('accessToken'))
 
         }).catch((error) => {
             reject(error)
@@ -34,10 +33,8 @@ export const loginUser = (user: IUser) => {
     })
 }
 
-export async function getActiveUser(): Promise<IUser | null> {
-    console.log(localStorage.getItem('accessToken'))
-    
-    if (!localStorage.getItem('accessToken'))
+export async function getActiveUser(): Promise<IUser | null> {    
+    if (!localStorage.getItem('accessToken') )
         return null;
     const res = await apiClient.get('/users/self');
     return res.data.user;

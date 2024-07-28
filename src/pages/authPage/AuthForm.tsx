@@ -72,8 +72,7 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin}) => {
         try {
             await onClick(user)
             console.log('from authform', localStorage.getItem('accessToken'))
-            // TODO: remove comment
-            // navigate('/')
+            navigate('/')
         } catch (error) {
             if(axios.isAxiosError(error)){
                 if (error.response?.data === "User already exists") {
@@ -83,7 +82,7 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin}) => {
                     setPasswordValid({isValid: false, errorText: "email or password incorrect"})
                 }
             } else {
-                console.log(error)
+                console.log("error in AuthForm:", error)
             }
         }
         setIsLoading(false);

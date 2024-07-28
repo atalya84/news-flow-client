@@ -21,25 +21,23 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
     res => res,
     async error => {
-        console.log("got here mother fucker")
-        console.log("error", error.response)
         if (error.response.status === 401 && error.config.url !== '/auth/refresh') {
-            apiClient.get('/auth/refresh').then( function(res){
-            console.log(res);
+            let res = await apiClient.get('/auth/refresh')
+            console.log("REFRESH WORKED!!!")
             localStorage.setItem('refreshToken', res.data.refreshToken);
             localStorage.setItem('accessToken', res.data.accessToken);
-            }
-            )
-
             return await apiClient(error.config)  // retry failed request
-        } 
-        if (error.response.status === 401 && error.config.url === '/auth/refresh') {
-            console.log("for the sport")
+            // localStorage.removeItem('refreshToken');
+            // localStorage.removeItem('accessToken');
+            
+
+        } else if (error.response.status === 401 && error.config.url === '/auth/refresh') {
             // if refresh returned 401, logout and return to home page
             localStorage.removeItem('refreshToken');
             localStorage.removeItem('accessToken');
             window.location.href = '/'
         }
+        
         return Promise.reject(error);
     },
 )
