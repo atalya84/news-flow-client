@@ -6,7 +6,7 @@ import { FormProps } from '../../types/Props';
 import { AuthForm } from './AuthForm';
 import { useNavigate } from 'react-router-dom';
 import { CredentialResponse } from '@react-oauth/google';
-import { registrUser } from '../../services/auth-service';
+import { registrUser, loginUser } from '../../services/auth-service';
 // import { AuthContext } from '../../context/Context';
 // import { registerGoogle, register } from '../../services/auth/AuthServices';
 
@@ -24,7 +24,7 @@ export const LoginPage: FC = () => {
       }
     }, []);
 
-    return <div>hello</div>
+    return <Page type="Login" onClick={loginUser} />;
 };
 
 const Page: FC<FormProps> = (formProps) => {

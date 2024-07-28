@@ -59,7 +59,10 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin}) => {
 
     const handleForm = useCallback(async () => {
         setIsLoading(true);
-        const imageUrl = await handleProfilePic()
+        var imageUrl
+        if (type === 'Sign Up'){
+            imageUrl = await handleProfilePic()
+        }
         const user: IUser = {
             email: email,
             name: name,
@@ -67,11 +70,16 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin}) => {
             password: password
         }
         try {
-            const res = await onClick(user)
+            await onClick(user)
             navigate('/')
         } catch (error) {
-            if(axios.isAxiosError(error) && error.response?.data === "User already exists") {
-                setEmailValid({isValid: false, errorText: "email already exists"})
+            if(axios.isAxiosError(error)){
+                if (error.response?.data === "User already exists") {
+                    setEmailValid({isValid: false, errorText: "email already exists"})
+                } else if (error.response?.data === "Invalid credentials") {
+                    setEmailValid({isValid: false, errorText: "email or password incorrect"})
+                    setPasswordValid({isValid: false, errorText: "email or password incorrect"})
+                }
             } else {
                 console.log(error)
             }

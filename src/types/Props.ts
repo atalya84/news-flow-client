@@ -15,7 +15,7 @@ export interface TextFieldProps {
 
 export interface FormProps {
     type: 'Login' | 'Sign Up';
-    onClick: (user: IUser) => Promise<any>;
+    onClick: (user: IUser) => Promise<IUser>;
     onGoogleLogin?: (response: any) => Promise<void>;
 }
 

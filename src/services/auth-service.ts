@@ -15,3 +15,19 @@ export const registrUser = (user: IUser) => {
         })
     })
 }
+
+export const loginUser = (user: IUser) => {
+    return new Promise<IUser>((resolve, reject) => {
+        console.log("Loging user...")
+        const email = user.email
+        const password = user.password
+        apiClient.post("/auth/login", { email, password })
+        .then((response) => {
+            localStorage.setItem('refreshToken', response.data.refreshToken);
+            localStorage.setItem('accessToken', response.data.accessToken);
+            resolve(response.data.user)
+        }).catch((error) => {
+            reject(error)
+        })
+    })
+}
