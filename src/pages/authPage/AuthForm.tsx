@@ -14,6 +14,7 @@ import { FormProps } from '../../types/Props';
 import { FieldValidation } from '../../types/Auth';
 import DropFileInput from '../../ui/Auth/ImageInput';
 import { uploadPhoto } from '../../services/file-service';
+import { getFileExt } from '../../utils';
 
 const MIN_PASSWORD_DIGITS = 8;
 
@@ -40,7 +41,7 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
     const handleProfilePic = async (): Promise<string> => {
         try {
             const formData: FormData = new FormData()
-            formData.append('file', imageInfo!, imageInfo?.name);
+            formData.append('file', imageInfo!, 'profile.' + getFileExt(imageInfo?.name),);
             const url = await uploadPhoto(formData);
             if (!url) {
                 console.log('image was not uploaded')

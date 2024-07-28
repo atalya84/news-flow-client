@@ -4,6 +4,11 @@ import { textFieldStyle } from './styles';
 import { useLocation, useNavigate } from 'react-router';
 import { IPost, IPostInput } from '../../types/feed.types';
 import { createPost, updatePost } from '../../services/posts.service';
+import TextInput from '../../ui/Auth/TextField';
+import DropFileInput from '../../ui/Auth/ImageInput';
+import { uploadPostImage } from '../../services/file-service';
+import { getFileExt } from '../../utils';
+import { AxiosError } from 'axios';
 
 export const Submit: FC = () => {
 	const navigate = useNavigate();
@@ -14,6 +19,7 @@ export const Submit: FC = () => {
 	const [source, setSource] = useState<string>('');
 	const [body, setBody] = useState<string>('');
 	const [isEdit, setIsEdit] = useState<boolean>(false);
+	const [imageInfo, setImageInfo] = useState<File | null>(null);
 
 	useEffect(() => {
 		if (state?.post) {
@@ -26,17 +32,23 @@ export const Submit: FC = () => {
 	}, []);
 
 	const handleSubmit = async () => {
-		console.log('submit');
 		setIsLoading(true);
-		const postInput: IPostInput = {
-			title,
-			country,
-			source,
-			body,
-			userId: '6623a0f01c16d9abe2da4fe1',
-			imgUrl: 'aaa',
-		};
 		try {
+			const formData = new FormData();
+			formData.append(
+				'file',
+				imageInfo!,
+				'6623a0f01c16d9abe2da4fe1' + '.' + getFileExt(imageInfo?.name),
+			);
+			const imgUrl: string = await uploadPostImage(formData);
+			const postInput: IPostInput = {
+				title,
+				country,
+				source,
+				body,
+				imgUrl,
+				userId: '6623a0f01c16d9abe2da4fe1',
+			};
 			const postId: string = state?.post
 				? (
 						await updatePost(state.post._id, {
@@ -46,55 +58,36 @@ export const Submit: FC = () => {
 					)._id
 				: (await createPost(postInput))._id;
 			navigate(`/posts/${postId}`);
-		} catch (err) {
-			console.error(err);
+		} catch (err: any) {
+			if (err instanceof AxiosError) console.error(err.message);
+			else console.error(err);
 		} finally {
 			setIsLoading(false);
 		}
 	};
 
 	return (
-		<Grid container justifyContent={'center'}>
-			<Grid item container rowSpacing={4} xl={6} lg={12}>
+		<Grid container justifyContent={'center'} sx={{ marginTop: '1rem' }}>
+			<Grid item container rowSpacing={2} xl={6} lg={11}>
 				<Grid item xs={12}>
-					<Typography variant="h4">Create Post</Typography>
+					<Typography variant="h4">
+						{isEdit ? 'Edit Post' : 'Create Post'}
+					</Typography>
 				</Grid>
 				<Grid item xs={12}>
-					<TextField
-						variant="outlined"
-						placeholder="Title"
-						sx={textFieldStyle}
-						value={title}
-						onChange={(e) => setTitle(e.target.value)}
-					/>
+					<TextInput title="Title" value={title} onChange={setTitle} />
 				</Grid>
 				<Grid item xs={12}>
-					<TextField
-						variant="outlined"
-						placeholder="Country"
-						sx={textFieldStyle}
-						value={country}
-						onChange={(e) => setCountry(e.target.value)}
-					/>
+					<TextInput title="Country" value={country} onChange={setCountry} />
 				</Grid>
 				<Grid item xs={12}>
-					<TextField
-						variant="outlined"
-						placeholder="Link URL"
-						sx={textFieldStyle}
-						value={source}
-						onChange={(e) => setSource(e.target.value)}
-					/>
+					<TextInput title="Link URL" value={source} onChange={setSource} />
 				</Grid>
 				<Grid item xs={12}>
-					<TextField
-						variant="outlined"
-						placeholder="Body"
-						multiline
-						sx={textFieldStyle}
-						value={body}
-						onChange={(e) => setBody(e.target.value)}
-					/>
+					<TextInput title="Body" value={body} onChange={setBody} />
+				</Grid>
+				<Grid item xs={12}>
+					<DropFileInput onChange={setImageInfo} error={false} />
 				</Grid>
 				<Grid item xs={12}>
 					<Button variant="contained" onClick={handleSubmit}>
