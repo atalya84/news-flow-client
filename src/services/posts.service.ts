@@ -18,3 +18,7 @@ export const updatePost = async (
 	postId: string,
 	postData: IPostInput,
 ): Promise<IPost> => (await client.put<IPost>(`/${postId}`, postData)).data;
+
+export const deletePost = async (postId: string): Promise<void> => {
+	(await client.delete(`/${postId}`)).data;
+};
