@@ -71,7 +71,9 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin}) => {
         }
         try {
             await onClick(user)
-            navigate('/')
+            console.log('from authform', localStorage.getItem('accessToken'))
+            // TODO: remove comment
+            // navigate('/')
         } catch (error) {
             if(axios.isAxiosError(error)){
                 if (error.response?.data === "User already exists") {
