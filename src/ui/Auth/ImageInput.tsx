@@ -1,9 +1,9 @@
-import React, { useRef, useState, FC } from 'react';
+import React, { useRef, useState, FC, useEffect } from 'react';
 import { ImageInputProps } from '../../types/Props';
 
 import '../default.css';
 
-const DropFileInput: FC<ImageInputProps> = ({ onChange, error }) => {
+const DropFileInput: FC<ImageInputProps> = ({ onChange, error, src }) => {
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 
     const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -27,6 +27,10 @@ const DropFileInput: FC<ImageInputProps> = ({ onChange, error }) => {
             }
         }
     }
+
+    useEffect(() => {
+        if (src) setImageSrc(src)
+    }, [])
 
     return (
         <>

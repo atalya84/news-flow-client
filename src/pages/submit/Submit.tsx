@@ -20,6 +20,7 @@ export const Submit: FC = () => {
 	const [body, setBody] = useState<string>('');
 	const [isEdit, setIsEdit] = useState<boolean>(false);
 	const [imageInfo, setImageInfo] = useState<File | null>(null);
+	const [imgUrl, setImgUrl] = useState<string>('');
 
 	useEffect(() => {
 		if (state?.post) {
@@ -28,6 +29,7 @@ export const Submit: FC = () => {
 			setCountry(state.post.country);
 			setSource(state.post.source);
 			setBody(state.post.body || '');
+			setImgUrl(state.post.imgUrl);
 		}
 	}, []);
 
@@ -87,7 +89,7 @@ export const Submit: FC = () => {
 					<TextInput title="Body" value={body} onChange={setBody} />
 				</Grid>
 				<Grid item xs={12}>
-					<DropFileInput onChange={setImageInfo} error={false} />
+					<DropFileInput src={imgUrl} onChange={setImageInfo} error={false} />
 				</Grid>
 				<Grid item xs={12}>
 					<Button variant="contained" onClick={handleSubmit}>
