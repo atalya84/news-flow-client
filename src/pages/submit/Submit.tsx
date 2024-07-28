@@ -8,7 +8,7 @@ import TextInput from '../../ui/Auth/TextField';
 import DropFileInput from '../../ui/Auth/ImageInput';
 import { uploadPostImage } from '../../services/file-service';
 import { getFileExt } from '../../utils';
-import { AxiosError } from 'axios';
+import axios from 'axios';
 
 export const Submit: FC = () => {
 	const navigate = useNavigate();
@@ -29,6 +29,7 @@ export const Submit: FC = () => {
 			setCountry(state.post.country);
 			setSource(state.post.source);
 			setBody(state.post.body || '');
+			//TODO: fetch image from server
 			setImgUrl(state.post.imgUrl);
 		}
 	}, []);
@@ -61,7 +62,7 @@ export const Submit: FC = () => {
 				: (await createPost(postInput))._id;
 			navigate(`/posts/${postId}`);
 		} catch (err: any) {
-			if (err instanceof AxiosError) console.error(err.message);
+			if (axios.isAxiosError(err)) console.error(err.message);
 			else console.error(err);
 		} finally {
 			setIsLoading(false);
