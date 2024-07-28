@@ -18,13 +18,15 @@ import {
 import { FC, useEffect, useRef, useState } from 'react';
 import { IPost } from '../../types/feed.types';
 import { useNavigate, useParams } from 'react-router';
-import { fetchPost } from '../../services/posts.service';
+import { deletePost, fetchPost } from '../../services/posts.service';
 import { fetchUser } from '../../services/users.service';
 import { IUser } from '../../types/user.types';
 import moment from 'moment';
-import { linkStyle } from '../../ui/components/FeedItem/styles';
+import { linkStyle } from '../../ui/FeedItem/styles';
 import { Delete, Edit, MoreHoriz } from '@mui/icons-material';
-import { Comments } from '../../ui/components/Comments/Comments';
+import { Comments } from '../../ui/Comments/Comments';
+import { UserTitle } from '../../ui/UserTitle/UserTitle';
+import { PostMenu } from '../../ui/PostMenu/PostMenu';
 
 export const Post: FC = () => {
 	const { postId } = useParams();
@@ -35,21 +37,6 @@ export const Post: FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [open, setOpen] = useState(false);
 	const anchorRef = useRef<HTMLButtonElement>(null);
-
-	const handleToggle = () => {
-		setOpen((prevOpen) => !prevOpen);
-	};
-
-	const handleClose = (event: Event | React.SyntheticEvent) => {
-		if (
-			anchorRef.current &&
-			anchorRef.current.contains(event.target as HTMLElement)
-		) {
-			return;
-		}
-
-		setOpen(false);
-	};
 
 	useEffect(() => {
 		(async () => {
@@ -66,6 +53,15 @@ export const Post: FC = () => {
 			}
 		})();
 	}, [postId]);
+
+	const handleToggle = () => {
+		setOpen((prevOpen) => !prevOpen);
+	};
+
+	const handleDeletePost = async (postId: string) => {
+		await deletePost(postId);
+		navigate('/')
+	}
 
 	return (
 		<>
@@ -84,12 +80,7 @@ export const Post: FC = () => {
 							) : (
 								<Grid container>
 									<Grid item xs={11}>
-										<Typography variant="subtitle1">
-											{userName}{' '}
-											<span style={{ color: '#FFFFFF77' }}>
-												• {moment(post.created).fromNow()}
-											</span>
-										</Typography>
+										<UserTitle username={userName} timestamp={post.created} />
 									</Grid>
 									<Grid item container xs={1} justifyContent={'end'}>
 										<IconButton
@@ -126,7 +117,7 @@ export const Post: FC = () => {
 											/>
 											<CardActionArea>
 												{post.source && (
-													<Typography variant="h6">
+													<Typography variant="subtitle1">
 														<Link
 															href={post.source}
 															target="_blank"
@@ -150,55 +141,7 @@ export const Post: FC = () => {
 					)}
 				</Grid>
 			</Grid>
-			<Popper
-				open={open}
-				anchorEl={anchorRef.current}
-				role={undefined}
-				placement="bottom-start"
-				transition
-				disablePortal
-			>
-				{({ TransitionProps, placement }) => (
-					<Grow
-						{...TransitionProps}
-						style={{
-							transformOrigin:
-								placement === 'bottom-start' ? 'left top' : 'left bottom',
-						}}
-					>
-						<Paper>
-							<ClickAwayListener onClickAway={handleClose}>
-								<MenuList
-									autoFocusItem={open}
-									id="composition-menu"
-									aria-labelledby="composition-button"
-								>
-									<MenuItem onClick={(e) => {
-										handleClose(e);
-										navigate('/posts/submit', {state: {post}})
-									}}
-									>
-										<ListItemIcon>
-											<Edit />
-										</ListItemIcon>
-										<ListItemText>
-											Edit
-										</ListItemText>
-									</MenuItem>
-									<MenuItem onClick={handleClose}>
-									<ListItemIcon>
-											<Delete />
-										</ListItemIcon>
-										<ListItemText>
-											Delete
-										</ListItemText>
-									</MenuItem>
-								</MenuList>
-							</ClickAwayListener>
-						</Paper>
-					</Grow>
-				)}
-			</Popper>
+			{post?.userId === '6623a0f01c16d9abe2da4fe1' && <PostMenu anchorRef={anchorRef} open={open} setOpen={setOpen} handleDeletePost={handleDeletePost} post={post}/>}
 		</>
 	);
 };

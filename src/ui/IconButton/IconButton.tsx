@@ -14,6 +14,7 @@ export const IconButton: FC<
 		startIcon={props.icon}
 		sx={buttonStyle}
 		disableElevation
+		{...props}
 	>
 		{props.label}
 	</Button>

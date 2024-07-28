@@ -25,7 +25,7 @@ export const cardBoxStyle: SxProps = {
 }
 
 export const cardContentStyle: SxProps = {
-	maxHeight: "50%",
+	marginBottom: "1rem",
 	textAlign: "left",
     flex: '1 0 auto'
 }

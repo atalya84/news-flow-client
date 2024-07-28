@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { IComment } from '../../../types/feed.types';
+import { IComment } from '../../types/feed.types';
 import { CommentItem } from './CommentItem';
 import { Box } from '@mui/material';
 
@@ -10,8 +10,8 @@ export const Comments: FC<{ comments: IComment[] }> = ({
 }) => {
 	return (
 		<Box sx={{ marginTop: '1rem' }}>
-			{comments.map((comment) => (
-				<CommentItem comment={comment} />
+			{comments.map((comment, index) => (
+				<CommentItem comment={comment} key={index} />
 			))}
 		</Box>
 	);

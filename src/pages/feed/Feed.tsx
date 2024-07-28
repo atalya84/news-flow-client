@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import './Feed.css';
-import FeedItem from '../../ui/components/FeedItem/FeedItem';
+import FeedItem from '../../ui/FeedItem/FeedItem';
 import { IPost } from '../../types/feed.types';
 import { Grid, Typography } from '@mui/material';
 import { fetchPosts } from '../../services/posts.service';
