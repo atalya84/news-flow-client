@@ -14,13 +14,9 @@ export const Router: FC = () => {
 			<Routes>
 				<Route path="/" element={<Navbar />}>
 					<Route index element={<Feed />} />
-					{/* <Route path="/posts/submit" element={<Submit />} />
-					<Route path="/posts/:postId" element={<Post />} /> */}
+					<Route path="/posts/submit" element={<Submit />} />
+					<Route path="/posts/:postId" element={<Post />} />
 					<Route path="*" element={<PageNotFound />} />
-				</Route>
-				<Route path="/posts">
-					<Route path="/submit" element={<Submit />} />
-					<Route path="/:postId" element={<Post />} />
 				</Route>
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/register" element={<SignUpPage />} />
