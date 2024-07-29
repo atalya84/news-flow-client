@@ -45,7 +45,7 @@ export const Post: FC = () => {
 				const post: IPost = await fetchPost(postId!);
 				const user: IUser = await fetchUser(post.userId);
 				setPost(post);
-				setUserName(`${user.name} ${user.lastName}`);
+				setUserName(`${user.name}`);
 			} catch (err) {
 				console.error(err);
 			} finally {

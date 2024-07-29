@@ -35,7 +35,7 @@ export const CommentItem: FC<{ comment: IComment }> = ({
 					<Grid item xs={12} container alignItems={'center'}>
 						<AccountCircle sx={userIconStyle} />
 						<UserTitle
-							username={`${user.name} ${user.lastName}`}
+							username={`${user.name}`}
 							timestamp={comment.created}
 						/>
 					</Grid>
