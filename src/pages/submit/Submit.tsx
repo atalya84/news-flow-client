@@ -41,6 +41,7 @@ export const Submit: FC = () => {
 			formData.append(
 				'file',
 				imageInfo!,
+				//TODO: replace with current user ID
 				'6623a0f01c16d9abe2da4fe1' + '.' + getFileExt(imageInfo?.name),
 			);
 			const imgUrl: string = await uploadPostImage(formData);
@@ -50,6 +51,7 @@ export const Submit: FC = () => {
 				source,
 				body,
 				imgUrl,
+				//TODO: replace with current user ID
 				userId: '6623a0f01c16d9abe2da4fe1',
 			};
 			const postId: string = state?.post

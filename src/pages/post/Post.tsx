@@ -141,6 +141,7 @@ export const Post: FC = () => {
 					)}
 				</Grid>
 			</Grid>
+			{/* TODO: replace with current user ID */}
 			{post?.userId === '6623a0f01c16d9abe2da4fe1' && <PostMenu anchorRef={anchorRef} open={open} setOpen={setOpen} handleDeletePost={handleDeletePost} post={post}/>}
 		</>
 	);

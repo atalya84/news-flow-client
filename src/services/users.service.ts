@@ -1,13 +1,8 @@
-import axios from 'axios';
+import apiClient from './api-client';
 import { IUser } from '../types/user.types';
 
-const client = axios.create({
-	baseURL: 'http://localhost:4000/users',
-});
-
 export const fetchUsers = async (): Promise<IUser[]> =>
-	(await client.get<IUser[]>('/')).data;
+	(await apiClient.get<IUser[]>('/users')).data;
 
 export const fetchUser = async (userId: string): Promise<IUser> =>
-	(await client.get<IUser>(`/${userId}`)).data;
-
+	(await apiClient.get<IUser>(`/users/${userId}`)).data;
