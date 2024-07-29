@@ -11,8 +11,7 @@ import {
 } from '@mui/material';
 import { Dispatch, FC, SetStateAction } from 'react';
 import { useNavigate } from 'react-router';
-import { IPost } from '../../types/feed.types';
-import { deletePost } from '../../services/posts.service';
+import { IPost } from '../../types/feed';
 
 export const PostMenu: FC<{
 	anchorRef: any;

@@ -15,5 +15,7 @@ export type IPostInput = Pick<IPost, "title" | "source" | "country" | "imgUrl" |
 export interface IComment {
 	text: string;
 	userId: string;
-	created: Date;
+	created: string;
 }
+
+export type ICommentInput = Pick<IComment, "userId" | "text">
