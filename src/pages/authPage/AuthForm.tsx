@@ -1,5 +1,5 @@
 import './AuthStyle.css';
-import { FC, useState, useCallback, useEffect, useMemo, ChangeEvent } from 'react';
+import { FC, useState, useCallback, useEffect, useMemo, ChangeEvent, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -16,10 +16,13 @@ import DropFileInput from '../../ui/Auth/ImageInput';
 import { uploadPhoto } from '../../services/file-service';
 import { IUser } from '../../types/User';
 import axios from 'axios';
+import { getFileExt } from '../../utils';
+import { AuthContext } from '../../Context';
 
 const MIN_PASSWORD_DIGITS = 8;
 
 export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin}) => {
+    const {setUser} = useContext(AuthContext)
     const navigate = useNavigate()
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -45,7 +48,7 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin}) => {
     const handleProfilePic = async (): Promise<string> => {
         try {
             const formData: FormData = new FormData()
-            formData.append('file', imageInfo!, imageInfo?.name);
+            formData.append('file', imageInfo!, 'profile.' + getFileExt(imageInfo?.name),);
             const url = await uploadPhoto(formData);
             if (!url) {
                 console.log('image was not uploaded')
@@ -70,8 +73,8 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin}) => {
             password: password
         }
         try {
-            await onClick(user)
-            console.log('from authform', localStorage.getItem('accessToken'))
+            const activeUser = await onClick(user)
+            setUser(activeUser)
             navigate('/')
         } catch (error) {
             if(axios.isAxiosError(error)){

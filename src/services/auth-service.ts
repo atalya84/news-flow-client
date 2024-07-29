@@ -8,7 +8,6 @@ export const registrUser = (user: IUser) => {
         console.log("Registering user...")
         apiClient.post("/auth/register", user)
         .then((response) => {
-            console.log(response)
             resolve(response.data)
         }).catch((error) => {
             reject(error)

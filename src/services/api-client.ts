@@ -1,8 +1,8 @@
-import axios from "axios";
-import {config} from '../config/config.js'
+import axios, { CanceledError } from "axios";
+import { config } from "../config/config";
 
 const apiClient = axios.create({
-    baseURL: config.BASE_DOMAIN
+    baseURL: config.DOMAIN_BASE
 });
 
 apiClient.interceptors.request.use(
@@ -27,8 +27,6 @@ apiClient.interceptors.response.use(
             localStorage.setItem('refreshToken', res.data.refreshToken);
             localStorage.setItem('accessToken', res.data.accessToken);
             return await apiClient(error.config)  // retry failed request
-            // localStorage.removeItem('refreshToken');
-            // localStorage.removeItem('accessToken');
             
 
         } else if (error.response.status === 401 && error.config.url === '/auth/refresh') {

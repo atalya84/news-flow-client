@@ -1,5 +1,5 @@
 import './App.css';
-import { GoogleOAuthProvider } from '@react-oauth/google'
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Router } from './Router';
 import { useState, useEffect } from 'react';
@@ -8,16 +8,15 @@ import { IUser } from './types/User';
 import { AuthContext } from './Context';
 
 const lightTheme = createTheme({
-  palette: {
-      mode: 'light',
-  },
+	palette: {
+		mode: 'light',
+	},
 });
 
 function App() {
   const [user, setUser] = useState<IUser | null>(null)
 
     const setActiveUser = async () => {
-      console.log()
         setUser(await getActiveUser());
     }
 

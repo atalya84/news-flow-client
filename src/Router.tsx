@@ -1,23 +1,26 @@
 import { FC } from 'react';
 import { Routes, Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
-
-import { HomePage } from './pages/homePage/HomePage';
+import { Feed } from './pages/feed/Feed';
+import { LoginPage, SignUpPage } from './pages/authPage/AuthPage';
 import { PageNotFound } from './pages/pageNotFound/PageNotFound';
 import { Navbar } from './ui';
-import { LoginPage, SignUpPage } from './pages/authPage/AuthPage';
+import { Post } from './pages/post/Post';
+import { Submit } from './pages/submit/Submit';
 
 export const Router: FC = () => {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Navbar />}>
-                    <Route index element={<HomePage />} />
-                    <Route path="*" element={<PageNotFound />} />
-                </Route>
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<SignUpPage />} />
-            </Routes>
-        </BrowserRouter>
-    );
+	return (
+		<BrowserRouter>
+			<Routes>
+				<Route path="/" element={<Navbar />}>
+					<Route index element={<Feed />} />
+					<Route path="/posts/submit" element={<Submit />} />
+					<Route path="/posts/:postId" element={<Post />} />
+					<Route path="*" element={<PageNotFound />} />
+				</Route>
+				<Route path="/login" element={<LoginPage />} />
+				<Route path="/register" element={<SignUpPage />} />
+			</Routes>
+		</BrowserRouter>
+	);
 };
