@@ -1,6 +1,6 @@
 import './AuthStyle.css';
-import { FC, useState, useCallback, useEffect, useMemo, ChangeEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { FC, useState, useCallback, useEffect, useMemo, ChangeEvent, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
@@ -14,11 +14,17 @@ import { FormProps } from '../../types/Props';
 import { FieldValidation } from '../../types/Auth';
 import DropFileInput from '../../ui/Auth/ImageInput';
 import { uploadPhoto } from '../../services/file-service';
+import { IUser } from '../../types/user.types';
+import axios from 'axios';
 import { getFileExt } from '../../utils';
+import { AuthContext } from '../../Context';
 
 const MIN_PASSWORD_DIGITS = 8;
 
-export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailValid, setEmailValid, passwordValid, setPasswordValid }) => {
+export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin }) => {
+
+    const {setUser} = useContext(AuthContext)
+    const navigate = useNavigate()
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -31,6 +37,8 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
 
     const [nameValid, setNameValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
     const [passConfValid, setPassConfValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
+    const [emailValid, setEmailValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
+    const [passwordValid, setPasswordValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
     const [imageValid, setImageValid] = useState<boolean>(true);
 
     const isEmailValid = (email: string): boolean => {
