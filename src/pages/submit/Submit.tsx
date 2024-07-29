@@ -1,12 +1,11 @@
-import { Button, Grid, TextField, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { FC, useState, useEffect } from 'react';
-import { textFieldStyle } from './styles';
 import { useLocation, useNavigate } from 'react-router';
-import { IPost, IPostInput } from '../../types/feed.types';
+import { IPost, IPostInput } from '../../types/feed';
 import { createPost, updatePost } from '../../services/posts.service';
 import TextInput from '../../ui/Auth/TextField';
 import DropFileInput from '../../ui/Auth/ImageInput';
-import { uploadPostImage } from '../../services/file-service';
+import { getPostImageUrl, uploadPostImage } from '../../services/file-service';
 import { getFileExt } from '../../utils';
 import axios from 'axios';
 
@@ -29,7 +28,6 @@ export const Submit: FC = () => {
 			setCountry(state.post.country);
 			setSource(state.post.source);
 			setBody(state.post.body || '');
-			//TODO: fetch image from server
 			setImgUrl(state.post.imgUrl);
 		}
 	}, []);
@@ -37,20 +35,23 @@ export const Submit: FC = () => {
 	const handleSubmit = async () => {
 		setIsLoading(true);
 		try {
-			const formData = new FormData();
-			formData.append(
-				'file',
-				imageInfo!,
-				//TODO: replace with current user ID
-				'6623a0f01c16d9abe2da4fe1' + '.' + getFileExt(imageInfo?.name),
-			);
-			const imgUrl: string = await uploadPostImage(formData);
+			let newImgUrl: string = imgUrl;
+			if (imageInfo) {
+				const formData = new FormData();
+				formData.append(
+					'file',
+					imageInfo!,
+					//TODO: replace with current user ID
+					'6623a0f01c16d9abe2da4fe1' + '.' + getFileExt(imageInfo?.name),
+				);
+				newImgUrl = await uploadPostImage(formData);
+			}
 			const postInput: IPostInput = {
 				title,
 				country,
 				source,
 				body,
-				imgUrl,
+				imgUrl: newImgUrl,
 				//TODO: replace with current user ID
 				userId: '6623a0f01c16d9abe2da4fe1',
 			};
@@ -92,7 +93,11 @@ export const Submit: FC = () => {
 					<TextInput title="Body" value={body} onChange={setBody} />
 				</Grid>
 				<Grid item xs={12}>
-					<DropFileInput src={imgUrl} onChange={setImageInfo} error={false} />
+					<DropFileInput
+						src={getPostImageUrl(imgUrl)}
+						onChange={setImageInfo}
+						error={false}
+					/>
 				</Grid>
 				<Grid item xs={12}>
 					<Button variant="contained" onClick={handleSubmit}>
