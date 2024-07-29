@@ -57,7 +57,6 @@ export const Post: FC = () => {
 			}
 		})();
 	}, [postId]);
-	console.log('Post:', post?.comments)
 
 	const handleToggle = () => {
 		setOpen((prevOpen) => !prevOpen);

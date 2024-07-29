@@ -20,10 +20,6 @@ export const CommentInput: FC = () => {
 				//TODO: use current user ID
 				userId: '6623a0f01c16d9abe2da4fe1',
 			};
-			console.log({
-				commentInput,
-				postId: post?._id,
-			});
 			if (post) setPost(await createComment(post._id, commentInput));
 		} catch (err) {
 			if (axios.isAxiosError(err)) console.error(err.message);
