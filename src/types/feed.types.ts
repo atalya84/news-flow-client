@@ -4,7 +4,7 @@ export interface IPost {
 	source: string;
 	country: string;
 	imgUrl: string;
-	userId: string;
+	userId?: string;
 	created: string;
 	body?: string;
 	comments?: IComment[];

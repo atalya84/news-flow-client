@@ -3,6 +3,7 @@ import { IUploadResponse } from '../types/File';
 
 export async function uploadPhoto(formData: FormData): Promise<string> {
 	try {
+		console.log("formData", formData.get("file"))
 		const response = await apiClient.post<IUploadResponse>(
 			'/file/uploadProfile',
 			formData,

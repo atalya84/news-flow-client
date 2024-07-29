@@ -48,8 +48,10 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin}) => {
     const handleProfilePic = async (): Promise<string> => {
         try {
             const formData: FormData = new FormData()
-            formData.append('file', imageInfo!, 'profile.' + getFileExt(imageInfo?.name),);
+            formData.append('file', imageInfo!, 'profile.' + getFileExt(imageInfo?.name));
+            console.log("inagessInfo", imageInfo)
             const url = await uploadPhoto(formData);
+            console.log("url", url)
             if (!url) {
                 console.log('image was not uploaded')
             }
@@ -74,13 +76,15 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin}) => {
         }
         try {
             const activeUser = await onClick(user)
-            setUser(activeUser)
-            navigate('/')
+            if (activeUser){
+                setUser(activeUser)
+                // navigate('/')
+            }
         } catch (error) {
             if(axios.isAxiosError(error)){
                 if (error.response?.data === "User already exists") {
                     setEmailValid({isValid: false, errorText: "email already exists"})
-                } else if (error.response?.data === "Invalid credentials") {
+                } else if (error.response?.data === "Invalid credentials" || error.response?.data === "User doesnot exists") {
                     setEmailValid({isValid: false, errorText: "email or password incorrect"})
                     setPasswordValid({isValid: false, errorText: "email or password incorrect"})
                 }
