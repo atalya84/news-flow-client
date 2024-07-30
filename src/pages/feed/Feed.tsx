@@ -15,22 +15,18 @@ export const Feed: FC = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		console.log(user)
 		if (!user) {
-			console.log(user)
-			navigate('/login');
-		} else {
-			fetchPosts()
-				.then(setPosts)
-				.catch(console.error)
-				.finally(() => setIsLoading(false));
+			const storedUser = JSON.parse(localStorage.getItem('user')!);
+			if (!storedUser) {
+				navigate('/login');
+			}
 		}
-	}, [user, navigate]);
 
-	if (!user) {
-        return <div>Loading...</div>;
-    }
-	if (!user) return null;
+		fetchPosts()
+			.then(setPosts)
+			.catch(console.error)
+			.finally(() => setIsLoading(false));
+	}, [user, navigate]);
 
 	return (
 		<Grid container justifyContent={'center'}>
