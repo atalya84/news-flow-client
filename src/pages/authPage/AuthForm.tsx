@@ -63,23 +63,33 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin }) => {
 
     const handleForm = useCallback(async () => {
         setIsLoading(true);
-        const formData: FormData = new FormData()
         var imageUrl
+        var user: IUser | null = null
         if (type === 'Sign Up'){
             imageUrl = await handleProfilePic()
-        }
-        if (imageUrl) {
-            const user: IUser = {
+            if (imageUrl) {
+                user = {
+                    email: email,
+                    name: name,
+                    imgUrl: imageUrl,
+                    password: password
+                }
+            } else {
+                alert("There was an error when uploading your profile picture")
+            }
+        } else {
+            user = {
                 email: email,
-                name: name,
-                imgUrl: imageUrl,
                 password: password
             }
+        }
+
+        if (user) {
             try {
                 const activeUser = await onClick(user)
                 if (activeUser){
                     setUser(activeUser)
-                    // navigate('/')
+                    navigate('/')
                 }
             } catch (error) {
                 if(axios.isAxiosError(error)){
@@ -93,8 +103,6 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin }) => {
                     console.log("error in AuthForm:", error)
                 }
             }
-        } else {
-            alert("There was an error when uploading your profile picture")
         }
         
         setIsLoading(false);
