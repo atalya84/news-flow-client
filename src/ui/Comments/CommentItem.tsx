@@ -1,11 +1,9 @@
-import { AccountCircle } from '@mui/icons-material';
 import { Grid, Typography } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
-import { IComment } from '../../types/feed.types';
-import moment from 'moment';
+import { IComment } from '../../types/feed';
 import { IUser } from '../../types/user.types';
 import { fetchUser } from '../../services/users.service';
-import { commentBoxStyle, userIconStyle } from './styles';
+import { commentBoxStyle } from './styles';
 import { UserTitle } from '../UserTitle/UserTitle';
 
 export const CommentItem: FC<{ comment: IComment }> = ({
@@ -32,11 +30,7 @@ export const CommentItem: FC<{ comment: IComment }> = ({
 			) : (
 				<>
 					<Grid item xs={12} container alignItems={'center'}>
-						<AccountCircle sx={userIconStyle} />
-						<UserTitle
-							username={`${user.name}`}
-							timestamp={comment.created}
-						/>
+						<UserTitle user={user} timestamp={comment.created} />
 					</Grid>
 					<Grid item container xs={12} sx={commentBoxStyle}>
 						<Typography variant="body1">{comment.text}</Typography>

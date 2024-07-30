@@ -1,4 +1,5 @@
 import { SxProps } from '@mui/material';
+import { CSSProperties } from 'react';
 
 export const cardStyle: SxProps = {
 	display: 'flex',
@@ -48,3 +49,5 @@ export const linkStyle: SxProps = {
 	WebkitBoxOrient: 'vertical',
 	WebkitLineClamp: 1,
 }
+
+export const feedItemImageStyle: CSSProperties = {width: 150, height: 150, borderRadius: '1rem'}

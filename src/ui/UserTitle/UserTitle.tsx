@@ -1,23 +1,29 @@
-import { Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import moment, { Moment } from 'moment';
 import { FC } from 'react';
+import { IUser } from '../../types/user.types';
+import { AsyncImage } from 'loadable-image';
+import { userImageStyle } from './styles';
 
 export const UserTitle: FC<{
-	username: string;
+	user: IUser;
 	timestamp: Moment | Date | string;
 }> = ({
-	username,
+	user,
 	timestamp,
 }: {
-	username: string;
+	user: IUser;
 	timestamp: Moment | Date | string;
 }) => {
 	return (
-		<Typography variant="subtitle1">
-			{username}{' '}
-			<span style={{ color: '#FFFFFF77' }}>
-				• {moment(timestamp).fromNow()}
-			</span>
-		</Typography>
+		<Grid item xs={12} container alignItems={'center'}>
+			<AsyncImage src={user.imgUrl || ''} style={userImageStyle} />
+			<Typography variant="subtitle1">
+				{user.name}{' '}
+				<span style={{ color: '#FFFFFF77' }}>
+					• {moment(timestamp).fromNow()}
+				</span>
+			</Typography>
+		</Grid>
 	);
 };

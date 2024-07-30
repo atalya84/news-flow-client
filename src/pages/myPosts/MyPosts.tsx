@@ -1,31 +1,22 @@
 import { FC, useContext, useEffect, useState } from 'react';
-import './Feed.css';
 import FeedItem from '../../ui/FeedItem/FeedItem';
 import { IPost } from '../../types/feed';
 import { Grid, Typography } from '@mui/material';
-import { fetchPosts } from '../../services/posts.service';
-import { useNavigate } from 'react-router';
+import { fetchUserPosts } from '../../services/posts.service';
 import { AuthContext } from '../../Context';
-import moment from 'moment';
 
-export const Feed: FC = () => {
-	const { user } = useContext(AuthContext);
+export const MyPosts: FC = () => {
 	const [posts, setPosts] = useState<IPost[]>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const navigate = useNavigate();
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const { user } = useContext(AuthContext);
 
 	useEffect(() => {
-		if (!user) {
-			navigate('/login');
-		} else {
-			fetchPosts()
-				.then(setPosts)
-				.catch(console.error)
-				.finally(() => setIsLoading(false));
-		}
-	}, [user, navigate]);
-
-	if (!user) return null;
+		setIsLoading(true);
+		fetchUserPosts(user!._id)
+			.then(setPosts)
+			.catch(console.error)
+			.finally(() => setIsLoading(false));
+	}, []);
 
 	return (
 		<Grid container justifyContent={'center'}>
@@ -39,9 +30,7 @@ export const Feed: FC = () => {
 						{'No Posts Found :('}
 					</Typography>
 				) : (
-					posts
-						.sort((a, b) => moment(b.created).diff(moment(a.created)))
-						.map((post, index) => <FeedItem post={post} key={index} />)
+					posts.map((post, index) => <FeedItem post={post} key={index} />)
 				)}
 			</Grid>
 		</Grid>

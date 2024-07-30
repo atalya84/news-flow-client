@@ -2,40 +2,35 @@ import {
 	Card,
 	CardActionArea,
 	CardMedia,
-	ClickAwayListener,
 	Grid,
-	Grow,
 	IconButton,
 	Link,
-	ListItemIcon,
-	ListItemText,
-	MenuItem,
-	MenuList,
-	Paper,
-	Popper,
 	Typography,
 } from '@mui/material';
+import { IPost } from '../../types/feed';
 import { FC, useContext, useEffect, useRef, useState } from 'react';
-import { IPost } from '../../types/feed.types';
 import { useNavigate, useParams } from 'react-router';
 import { deletePost, fetchPost } from '../../services/posts.service';
 import { fetchUser } from '../../services/users.service';
 import { IUser } from '../../types/user.types';
-import moment from 'moment';
 import { linkStyle } from '../../ui/FeedItem/styles';
-import { Delete, Edit, MoreHoriz } from '@mui/icons-material';
+import { MoreHoriz } from '@mui/icons-material';
 import { Comments } from '../../ui/Comments/Comments';
 import { UserTitle } from '../../ui/UserTitle/UserTitle';
 import { PostMenu } from '../../ui/PostMenu/PostMenu';
+import { postCardStyle, postImageStyle } from './styles';
+import { AsyncImage } from 'loadable-image';
+import { getPostImageUrl } from '../../services/file-service';
+import { PostContext } from './context';
 import { AuthContext } from '../../Context';
 
 export const Post: FC = () => {
-	const {user} = useContext(AuthContext)
+	const currentUser = useContext(AuthContext).user;
 	const { postId } = useParams();
 	const navigate = useNavigate();
 
 	const [post, setPost] = useState<IPost>();
-	const [userName, setUserName] = useState<string>('');
+	const [user, setUser] = useState<IUser>();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [open, setOpen] = useState(false);
 	const anchorRef = useRef<HTMLButtonElement>(null);
@@ -47,7 +42,7 @@ export const Post: FC = () => {
 				const post: IPost = await fetchPost(postId!);
 				const user: IUser = await fetchUser(post.userId);
 				setPost(post);
-				setUserName(`${user.name}`);
+				setUser(user);
 			} catch (err) {
 				console.error(err);
 			} finally {
@@ -62,17 +57,17 @@ export const Post: FC = () => {
 
 	const handleDeletePost = async (postId: string) => {
 		await deletePost(postId);
-		navigate('/')
-	}
+		navigate('/');
+	};
 
 	return (
-		<>
+		<PostContext.Provider value={{ post, setPost }}>
 			<Grid
 				container
 				justifyContent={'center'}
 				sx={{ paddingTop: '2rem', color: 'white' }}
 			>
-				<Grid item lg={8} xl={6}>
+				<Grid item lg={8} xl={5}>
 					{isLoading ? (
 						<p>Loading...</p>
 					) : (
@@ -82,7 +77,7 @@ export const Post: FC = () => {
 							) : (
 								<Grid container>
 									<Grid item xs={11}>
-										<UserTitle username={userName} timestamp={post.created} />
+										{user && <UserTitle user={user} timestamp={post.created} />}
 									</Grid>
 									<Grid item container xs={1} justifyContent={'end'}>
 										<IconButton
@@ -101,22 +96,13 @@ export const Post: FC = () => {
 										<Typography variant="h5">{post.title}</Typography>
 									</Grid>
 									<Grid item xs={12}>
-										<Card
-											variant={'outlined'}
-											sx={{
-												marginTop: '1rem',
-												borderColor: '#333333',
-												backgroundColor: 'transparent',
-												boxShadow: 'none',
-												borderRadius: '1rem',
-											}}
-										>
-											<CardMedia
-												component={'img'}
-												image={
-													'https://s.france24.com/media/display/eeb18444-4b2d-11ef-950d-005056bf30b7/w:980/p:16x9/000_364Y2P9.jpg'
-												}
-											/>
+										<Card variant={'outlined'} sx={postCardStyle}>
+											<CardMedia image={getPostImageUrl(post.imgUrl)}>
+												<AsyncImage
+													src={getPostImageUrl(post.imgUrl)}
+													style={postImageStyle}
+												/>
+											</CardMedia>
 											<CardActionArea>
 												{post.source && (
 													<Typography variant="subtitle1">
@@ -136,15 +122,24 @@ export const Post: FC = () => {
 											</CardActionArea>
 										</Card>
 									</Grid>
-									<Comments comments={post.comments || []} />
+									<Grid item xs={12}>
+										<Comments comments={post.comments || []} />
+									</Grid>
 								</Grid>
 							)}
 						</>
 					)}
 				</Grid>
 			</Grid>
-			{/* TODO: replace with current user ID */}
-			{post?.userId === user?._id && <PostMenu anchorRef={anchorRef} open={open} setOpen={setOpen} handleDeletePost={handleDeletePost} post={post}/>}
-		</>
+			{post?.userId === currentUser?._id && (
+				<PostMenu
+					anchorRef={anchorRef}
+					open={open}
+					setOpen={setOpen}
+					handleDeletePost={handleDeletePost}
+					post={post}
+				/>
+			)}
+		</PostContext.Provider>
 	);
 };
