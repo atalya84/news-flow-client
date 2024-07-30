@@ -4,6 +4,9 @@ import apiClient from './api-client';
 export const fetchPosts = async (): Promise<IPost[]> =>
 	(await apiClient.get<IPost[]>('/posts')).data;
 
+export const fetchUserPosts = async (userId: string): Promise<IPost[]> =>
+	(await apiClient.get<IPost[]>(`/users/${userId}/posts`)).data;
+
 export const fetchPost = async (postId: string): Promise<IPost> =>
 	(await apiClient.get<IPost>(`/posts/${postId}`)).data;
 

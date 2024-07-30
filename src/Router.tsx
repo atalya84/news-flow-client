@@ -7,6 +7,7 @@ import { PageNotFound } from './pages/pageNotFound/PageNotFound';
 import { Navbar } from './ui';
 import { Post } from './pages/post/Post';
 import { Submit } from './pages/submit/Submit';
+import { MyPosts } from './pages/myPosts/MyPosts';
 
 export const Router: FC = () => {
 	return (
@@ -14,6 +15,7 @@ export const Router: FC = () => {
 			<Routes>
 				<Route path="/" element={<Navbar />}>
 					<Route index element={<Feed />} />
+					<Route path="/posts/self" element={<MyPosts />} />
 					<Route path="/posts/submit" element={<Submit />} />
 					<Route path="/posts/:postId" element={<Post />} />
 					<Route path="*" element={<PageNotFound />} />
