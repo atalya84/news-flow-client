@@ -14,7 +14,7 @@ const lightTheme = createTheme({
 });
 
 function App() {
-	const [user, setUser] = useState<IUser | null | undefined>();
+	const [user, setUser] = useState<IUser | null>(null);
 
 	const setActiveUser = async () => {
 		const storedUser = localStorage.getItem('user');
