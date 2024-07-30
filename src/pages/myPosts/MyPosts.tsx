@@ -1,18 +1,18 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import FeedItem from '../../ui/FeedItem/FeedItem';
 import { IPost } from '../../types/feed';
 import { Grid, Typography } from '@mui/material';
 import { fetchUserPosts } from '../../services/posts.service';
+import { AuthContext } from '../../Context';
 
 export const MyPosts: FC = () => {
 	const [posts, setPosts] = useState<IPost[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	//TODO: use current user ID
-	const user = { _id: '6623a0f01c16d9abe2da4fe1' };
+	const { user } = useContext(AuthContext);
 
 	useEffect(() => {
 		setIsLoading(true);
-		fetchUserPosts(user._id)
+		fetchUserPosts(user!._id)
 			.then(setPosts)
 			.catch(console.error)
 			.finally(() => setIsLoading(false));
