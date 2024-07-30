@@ -1,7 +1,6 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
 import { IUser } from './types/user.types';
 import { IPost } from './types/feed';
-import { GeoData, Weather } from './types/weather';
 
 export const AuthContext = createContext<{
 	user: IUser | null;

@@ -31,7 +31,10 @@ export const Feed: FC = () => {
 
 	useEffect(() => {
 		if (!user) {
-			navigate('/login');
+			const storedUser = JSON.parse(localStorage.getItem('user')!);
+			if (!storedUser) {
+				navigate('/login');
+			}
 		} else {
 			fetchPosts()
 				.then(setPosts)

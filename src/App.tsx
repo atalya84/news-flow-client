@@ -18,7 +18,15 @@ function App() {
 	const [user, setUser] = useState<IUser | null>(null);
 
 	const setActiveUser = async () => {
-		setUser(await getActiveUser());
+		const storedUser = localStorage.getItem('user');
+		if (storedUser) {
+			const parsedUser: IUser = JSON.parse(storedUser);
+			setUser(parsedUser);
+			console.log('parsedUser', parsedUser);
+		} else {
+			const activeUser = await getActiveUser();
+			setUser(activeUser);
+		}
 	};
 
 	useEffect(() => {
