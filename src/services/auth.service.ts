@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { AuthContext } from "../Context";
 import { IUser } from "../types/user.types";
 import apiClient from "./api-client";
 
@@ -36,3 +38,17 @@ export const loginUser = (user: IUser) => {
         })
     })
 }
+
+export async function signOut(): Promise<string> {
+    try {
+        apiClient.get('/auth/logout')
+          .then(response => {
+            localStorage.removeItem('refreshToken');
+            localStorage.removeItem('accessToken');
+            window.location.href = '/';
+          });
+      return 'User signed out successfully';
+    } catch (error) {
+      return 'An error occurred during sign out';
+    }
+  }
