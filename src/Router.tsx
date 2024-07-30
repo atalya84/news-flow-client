@@ -7,6 +7,7 @@ import { PageNotFound } from './pages/pageNotFound/PageNotFound';
 import { Navbar } from './ui';
 import { Post } from './pages/post/Post';
 import { Submit } from './pages/submit/Submit';
+import { ProfilePage } from './pages/userProfile/ProfilePage';
 
 export const Router: FC = () => {
 	return (
@@ -16,6 +17,7 @@ export const Router: FC = () => {
 					<Route index element={<Feed />} />
 					<Route path="/posts/submit" element={<Submit />} />
 					<Route path="/posts/:postId" element={<Post />} />
+					<Route path="/profile" element={<ProfilePage />} />
 					<Route path="*" element={<PageNotFound />} />
 				</Route>
 				<Route path="/login" element={<LoginPage />} />

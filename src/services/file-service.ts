@@ -9,7 +9,7 @@ export async function uploadPhoto(formData: FormData): Promise<string> {
 		);
 		return response.data.imgUrl;
 	} catch (error) {
-		console.log('error:', error);
+		console.log('uploadPhoto:', error);
 		throw new Error('Failed to upload photo.');
 	}
 }
