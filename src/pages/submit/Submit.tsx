@@ -1,5 +1,5 @@
 import { Button, Grid, TextField, Typography } from '@mui/material';
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useContext } from 'react';
 import { textFieldStyle } from './styles';
 import { useLocation, useNavigate } from 'react-router';
 import { IPost, IPostInput } from '../../types/feed.types';
@@ -9,8 +9,10 @@ import DropFileInput from '../../ui/Auth/ImageInput';
 import { uploadPostImage } from '../../services/file-service';
 import { getFileExt } from '../../utils';
 import axios from 'axios';
+import { AuthContext } from '../../Context';
 
 export const Submit: FC = () => {
+	const {user} = useContext(AuthContext)
 	const navigate = useNavigate();
 	const { state }: { state: { post: IPost } } = useLocation();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -21,6 +23,10 @@ export const Submit: FC = () => {
 	const [isEdit, setIsEdit] = useState<boolean>(false);
 	const [imageInfo, setImageInfo] = useState<File | null>(null);
 	const [imgUrl, setImgUrl] = useState<string>('');
+
+	if (user) {
+		console.log("user is", user, "in Submit.tsx")
+	}
 
 	useEffect(() => {
 		if (state?.post) {
@@ -41,8 +47,7 @@ export const Submit: FC = () => {
 			formData.append(
 				'file',
 				imageInfo!,
-				//TODO: replace with current user ID
-				'6623a0f01c16d9abe2da4fe1' + '.' + getFileExt(imageInfo?.name),
+				user?._id + '.' + getFileExt(imageInfo?.name),
 			);
 			const imgUrl: string = await uploadPostImage(formData);
 			const postInput: IPostInput = {
@@ -51,8 +56,7 @@ export const Submit: FC = () => {
 				source,
 				body,
 				imgUrl,
-				//TODO: replace with current user ID
-				userId: '6623a0f01c16d9abe2da4fe1',
+				userId: user?._id ?? '',
 			};
 			const postId: string = state?.post
 				? (

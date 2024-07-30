@@ -1,6 +1,6 @@
 import './AuthStyle.css';
-import { FC, useState, useCallback, useEffect, useMemo, ChangeEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { FC, useState, useCallback, useEffect, useMemo, ChangeEvent, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
@@ -14,11 +14,17 @@ import { FormProps } from '../../types/Props';
 import { FieldValidation } from '../../types/Auth';
 import DropFileInput from '../../ui/Auth/ImageInput';
 import { uploadPhoto } from '../../services/file-service';
+import { IUser } from '../../types/user.types';
+import axios from 'axios';
 import { getFileExt } from '../../utils';
+import { AuthContext } from '../../Context';
 
 const MIN_PASSWORD_DIGITS = 8;
 
-export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailValid, setEmailValid, passwordValid, setPasswordValid }) => {
+export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin }) => {
+
+    const {setUser} = useContext(AuthContext)
+    const navigate = useNavigate()
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -31,6 +37,8 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
 
     const [nameValid, setNameValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
     const [passConfValid, setPassConfValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
+    const [emailValid, setEmailValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
+    const [passwordValid, setPasswordValid] = useState<FieldValidation>({ isValid: true, errorText: '' });
     const [imageValid, setImageValid] = useState<boolean>(true);
 
     const isEmailValid = (email: string): boolean => {
@@ -55,13 +63,48 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin, emailVal
 
     const handleForm = useCallback(async () => {
         setIsLoading(true);
-        const imageUrl = await handleProfilePic()
-        const formData: FormData = new FormData()
-        formData.append('email', email);
-        formData.append('password', password);
-        formData.append('name', name);
-        formData.append('imgUrl', imageUrl);
-        await onClick(formData);
+        var imageUrl
+        var user: IUser | null = null
+        if (type === 'Sign Up'){
+            imageUrl = await handleProfilePic()
+            if (imageUrl) {
+                user = {
+                    email: email,
+                    name: name,
+                    imgUrl: imageUrl,
+                    password: password
+                }
+            } else {
+                alert("There was an error when uploading your profile picture")
+            }
+        } else {
+            user = {
+                email: email,
+                password: password
+            }
+        }
+
+        if (user) {
+            try {
+                const activeUser = await onClick(user)
+                if (activeUser){
+                    setUser(activeUser)
+                    navigate('/')
+                }
+            } catch (error) {
+                if(axios.isAxiosError(error)){
+                    if (error.response?.data === "User already exists") {
+                        setEmailValid({isValid: false, errorText: "email already exists"})
+                    } else if (error.response?.data === "Invalid credentials" || error.response?.data === "User doesnot exists") {
+                        setEmailValid({isValid: false, errorText: "email or password incorrect"})
+                        setPasswordValid({isValid: false, errorText: "email or password incorrect"})
+                    }
+                } else {
+                    console.log("error in AuthForm:", error)
+                }
+            }
+        }
+        
         setIsLoading(false);
       }, [email, password, name, imageInfo]);
 
