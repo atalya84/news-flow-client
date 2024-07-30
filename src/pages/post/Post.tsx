@@ -2,28 +2,19 @@ import {
 	Card,
 	CardActionArea,
 	CardMedia,
-	ClickAwayListener,
 	Grid,
-	Grow,
 	IconButton,
 	Link,
-	ListItemIcon,
-	ListItemText,
-	MenuItem,
-	MenuList,
-	Paper,
-	Popper,
 	Typography,
 } from '@mui/material';
-import { FC, useEffect, useRef, useState } from 'react';
 import { IPost } from '../../types/feed';
+import { FC, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { deletePost, fetchPost } from '../../services/posts.service';
 import { fetchUser } from '../../services/users.service';
 import { IUser } from '../../types/user.types';
-import moment from 'moment';
 import { linkStyle } from '../../ui/FeedItem/styles';
-import { Delete, Edit, MoreHoriz } from '@mui/icons-material';
+import { MoreHoriz } from '@mui/icons-material';
 import { Comments } from '../../ui/Comments/Comments';
 import { UserTitle } from '../../ui/UserTitle/UserTitle';
 import { PostMenu } from '../../ui/PostMenu/PostMenu';
@@ -31,8 +22,10 @@ import { postCardStyle, postImageStyle } from './styles';
 import { AsyncImage } from 'loadable-image';
 import { getPostImageUrl } from '../../services/file-service';
 import { PostContext } from './context';
+import { AuthContext } from '../../Context';
 
 export const Post: FC = () => {
+	const currentUser = useContext(AuthContext).user;
 	const { postId } = useParams();
 	const navigate = useNavigate();
 
@@ -64,11 +57,11 @@ export const Post: FC = () => {
 
 	const handleDeletePost = async (postId: string) => {
 		await deletePost(postId);
-		navigate('/')
-	}
+		navigate('/');
+	};
 
 	return (
-		<PostContext.Provider value={{post, setPost}}>
+		<PostContext.Provider value={{ post, setPost }}>
 			<Grid
 				container
 				justifyContent={'center'}
@@ -103,14 +96,12 @@ export const Post: FC = () => {
 										<Typography variant="h5">{post.title}</Typography>
 									</Grid>
 									<Grid item xs={12}>
-										<Card
-											variant={'outlined'}
-											sx={postCardStyle}
-										>
-											<CardMedia
-												image={getPostImageUrl(post.imgUrl)}
-											>
-												<AsyncImage src={getPostImageUrl(post.imgUrl)} style={postImageStyle}/>
+										<Card variant={'outlined'} sx={postCardStyle}>
+											<CardMedia image={getPostImageUrl(post.imgUrl)}>
+												<AsyncImage
+													src={getPostImageUrl(post.imgUrl)}
+													style={postImageStyle}
+												/>
 											</CardMedia>
 											<CardActionArea>
 												{post.source && (
@@ -132,7 +123,7 @@ export const Post: FC = () => {
 										</Card>
 									</Grid>
 									<Grid item xs={12}>
-										<Comments comments={post.comments || []}/>
+										<Comments comments={post.comments || []} />
 									</Grid>
 								</Grid>
 							)}
@@ -140,8 +131,15 @@ export const Post: FC = () => {
 					)}
 				</Grid>
 			</Grid>
-			{/* TODO: replace with current user ID */}
-			{post?.userId === '6623a0f01c16d9abe2da4fe1' && <PostMenu anchorRef={anchorRef} open={open} setOpen={setOpen} handleDeletePost={handleDeletePost} post={post}/>}
+			{post?.userId === currentUser?._id && (
+				<PostMenu
+					anchorRef={anchorRef}
+					open={open}
+					setOpen={setOpen}
+					handleDeletePost={handleDeletePost}
+					post={post}
+				/>
+			)}
 		</PostContext.Provider>
 	);
 };

@@ -11,6 +11,7 @@ enum NavOptions {
 	NONE,
 	FEED,
 	MY_POSTS,
+	PROFILE,
 }
 
 export const Navbar = () => {
@@ -26,6 +27,10 @@ export const Navbar = () => {
 	const goToCreatePost = useCallback(() => {
 		setselected(NavOptions.NONE);
 		navigate('/posts/submit');
+	}, []);
+	const goToUserProfile = useCallback(() => {
+		setselected(NavOptions.PROFILE);
+		navigate('/profile');
 	}, []);
 
 	const [selected, setselected] = useState<NavOptions>(NavOptions.FEED);
@@ -53,6 +58,9 @@ export const Navbar = () => {
 					</NavButton>
 					<NavButton page={NavOptions.MY_POSTS} onClick={goToMyPosts}>
 						My Posts
+					</NavButton>
+					<NavButton page={NavOptions.PROFILE} onClick={goToUserProfile}>
+						Profile
 					</NavButton>
 				</Stack>
 				<Button

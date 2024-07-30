@@ -1,21 +1,30 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import './Feed.css';
 import FeedItem from '../../ui/FeedItem/FeedItem';
 import { IPost } from '../../types/feed';
 import { Grid, Typography } from '@mui/material';
 import { fetchPosts } from '../../services/posts.service';
+import { useNavigate } from 'react-router';
+import { AuthContext } from '../../Context';
 
 export const Feed: FC = () => {
+	const {user} = useContext(AuthContext)
 	const [posts, setPosts] = useState<IPost[]>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const navigate = useNavigate();
 
 	useEffect(() => {
-		setIsLoading(true);
-		fetchPosts()
-			.then(setPosts)
-			.catch(console.error)
-			.finally(() => setIsLoading(false));
-	}, []);
+        if (!user) {
+            navigate('/login');
+        } else {
+            fetchPosts()
+                .then(setPosts)
+                .catch(console.error)
+                .finally(() => setIsLoading(false));
+        }
+    }, [user, navigate]);
+
+    if (!user) return null;
 
 	return (
 		<Grid container justifyContent={'center'}>
