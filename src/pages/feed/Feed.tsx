@@ -1,11 +1,20 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import './Feed.css';
 import FeedItem from '../../ui/FeedItem/FeedItem';
 import { IPost } from '../../types/feed.types';
 import { Grid, Typography } from '@mui/material';
 import { fetchPosts } from '../../services/posts.service';
+import { useNavigate } from 'react-router';
+import { AuthContext } from '../../Context';
 
 export const Feed: FC = () => {
+	const {user} = useContext(AuthContext)
+
+	if(!user) {
+		const navigate = useNavigate()
+		navigate('/login')
+	}
+	
 	const [posts, setPosts] = useState<IPost[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 

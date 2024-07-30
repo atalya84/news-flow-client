@@ -15,7 +15,7 @@ import {
 	Popper,
 	Typography,
 } from '@mui/material';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useContext, useEffect, useRef, useState } from 'react';
 import { IPost } from '../../types/feed.types';
 import { useNavigate, useParams } from 'react-router';
 import { deletePost, fetchPost } from '../../services/posts.service';
@@ -27,8 +27,10 @@ import { Delete, Edit, MoreHoriz } from '@mui/icons-material';
 import { Comments } from '../../ui/Comments/Comments';
 import { UserTitle } from '../../ui/UserTitle/UserTitle';
 import { PostMenu } from '../../ui/PostMenu/PostMenu';
+import { AuthContext } from '../../Context';
 
 export const Post: FC = () => {
+	const {user} = useContext(AuthContext)
 	const { postId } = useParams();
 	const navigate = useNavigate();
 
@@ -45,7 +47,7 @@ export const Post: FC = () => {
 				const post: IPost = await fetchPost(postId!);
 				const user: IUser = await fetchUser(post.userId);
 				setPost(post);
-				setUserName(`${user.name} ${user.lastName}`);
+				setUserName(`${user.name}`);
 			} catch (err) {
 				console.error(err);
 			} finally {
@@ -142,7 +144,7 @@ export const Post: FC = () => {
 				</Grid>
 			</Grid>
 			{/* TODO: replace with current user ID */}
-			{post?.userId === '6623a0f01c16d9abe2da4fe1' && <PostMenu anchorRef={anchorRef} open={open} setOpen={setOpen} handleDeletePost={handleDeletePost} post={post}/>}
+			{post?.userId === user?._id && <PostMenu anchorRef={anchorRef} open={open} setOpen={setOpen} handleDeletePost={handleDeletePost} post={post}/>}
 		</>
 	);
 };
