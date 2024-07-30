@@ -14,27 +14,36 @@ const lightTheme = createTheme({
 });
 
 function App() {
-	const [user, setUser] = useState<IUser | null>(null)
-  
-	  const setActiveUser = async () => {
-		  setUser(await getActiveUser());
-	  }
-  
-	  useEffect(() => {
-		  setActiveUser()
-	  }, [])
-  
+	const [user, setUser] = useState<IUser | null>(null);
+
+	const setActiveUser = async () => {
+		const storedUser = localStorage.getItem('user');
+		if (storedUser) {
+			const parsedUser: IUser = JSON.parse(storedUser);
+			setUser(parsedUser);
+			console.log('parsedUser', parsedUser);
+		} else {
+			const activeUser = await getActiveUser();
+			setUser(activeUser);
+		}
+	};
+
+	useEffect(() => {
+		setActiveUser();
+		console.log('user', user);
+	}, []);
+
 	return (
-	  <div className="news-flow-app">
-		<AuthContext.Provider value={{user, setUser}}>
-		  <GoogleOAuthProvider clientId="844336525550-qe2lm7m034t7m25dsr8gn70e33eq3gp5.apps.googleusercontent.com">
-			<ThemeProvider theme={lightTheme}>
-			  <Router />
-			</ThemeProvider>
-		  </GoogleOAuthProvider>
-		</AuthContext.Provider>
-	  </div>
+		<div className="news-flow-app">
+			<AuthContext.Provider value={{ user, setUser }}>
+				<GoogleOAuthProvider clientId="844336525550-qe2lm7m034t7m25dsr8gn70e33eq3gp5.apps.googleusercontent.com">
+					<ThemeProvider theme={lightTheme}>
+						<Router />
+					</ThemeProvider>
+				</GoogleOAuthProvider>
+			</AuthContext.Provider>
+		</div>
 	);
-  }
-  
-  export default App;
+}
+
+export default App;
