@@ -1,0 +1,35 @@
+.profile-page-container {
+    position: relative;
+  }
+
+.profile-input {
+    width: 250px;
+    height: 250px;
+    border: 5px solid #202535;
+
+    position: absolute;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+
+.profile-input .selected-image {
+    height: 250px;
+}
+
+.popular-container {
+    text-align: center;
+    color: #fec258;
+}
+
+.user-details {
+    margin-top: 190px;
+    margin-left: 150px;
+}
+
+.logout {
+  border-radius: 20px;
+  background-color: transparent; 
+  color: #f9b334;
+  border: 2px solid #f9b334;
+}

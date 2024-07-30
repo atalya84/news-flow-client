@@ -3,7 +3,7 @@ import { ImageInputProps } from '../../types/Props';
 
 import '../default.css';
 
-const DropFileInput: FC<ImageInputProps> = ({ onChange, error, src }) => {
+const DropFileInput: FC<ImageInputProps> = ({ onChange, error, src, className }) => {
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 
     const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -30,13 +30,13 @@ const DropFileInput: FC<ImageInputProps> = ({ onChange, error, src }) => {
 
     useEffect(() => {
         if (src) setImageSrc(src)
-    }, [])
+    }, [src])
 
     return (
         <>
             <div
                 ref={wrapperRef}
-                className="drop-file-input"
+                className={`drop-file-input ${className}`}
                 onDragEnter={onDragEnter}
                 onDragLeave={onDragLeave}
                 onDrop={onDrop}
