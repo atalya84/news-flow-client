@@ -1,5 +1,5 @@
 import { HTMLInputTypeAttribute } from "react";
-import { FieldValidation } from "./Auth";
+import { IUser } from "./user.types";
 
 export interface TextFieldProps {
     value?: string;
@@ -14,12 +14,8 @@ export interface TextFieldProps {
 
 export interface FormProps {
     type: 'Login' | 'Sign Up';
-    onClick: (formData: FormData) => Promise<void>;
-    onGoogleLogin?: (response: any) => Promise<void>; 
-    emailValid: FieldValidation;
-    setEmailValid: React.Dispatch<React.SetStateAction<FieldValidation>>;
-    passwordValid: FieldValidation;
-    setPasswordValid: React.Dispatch<React.SetStateAction<FieldValidation>>;
+    onClick: (user: IUser) => Promise<IUser>;
+    onGoogleLogin?: (response: any) => Promise<void>;
 }
 
 export interface ImageInputProps {

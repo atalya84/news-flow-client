@@ -63,13 +63,40 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin }) => {
 
     const handleForm = useCallback(async () => {
         setIsLoading(true);
-        const imageUrl = await handleProfilePic()
         const formData: FormData = new FormData()
-        formData.append('email', email);
-        formData.append('password', password);
-        formData.append('name', name);
-        formData.append('imgUrl', imageUrl);
-        await onClick(formData);
+        var imageUrl
+        if (type === 'Sign Up'){
+            imageUrl = await handleProfilePic()
+        }
+        if (imageUrl) {
+            const user: IUser = {
+                email: email,
+                name: name,
+                imgUrl: imageUrl,
+                password: password
+            }
+            try {
+                const activeUser = await onClick(user)
+                if (activeUser){
+                    setUser(activeUser)
+                    // navigate('/')
+                }
+            } catch (error) {
+                if(axios.isAxiosError(error)){
+                    if (error.response?.data === "User already exists") {
+                        setEmailValid({isValid: false, errorText: "email already exists"})
+                    } else if (error.response?.data === "Invalid credentials" || error.response?.data === "User doesnot exists") {
+                        setEmailValid({isValid: false, errorText: "email or password incorrect"})
+                        setPasswordValid({isValid: false, errorText: "email or password incorrect"})
+                    }
+                } else {
+                    console.log("error in AuthForm:", error)
+                }
+            }
+        } else {
+            alert("There was an error when uploading your profile picture")
+        }
+        
         setIsLoading(false);
       }, [email, password, name, imageInfo]);
 
