@@ -7,6 +7,7 @@ export async function getActiveUser(): Promise<IUser | null> {
     if (!localStorage.getItem('accessToken') )
         return null;
     const res = await apiClient.get('/users/self');
+    localStorage.setItem('user', JSON.stringify(res));
     return res.data.user;
 } 
 

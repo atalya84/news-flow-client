@@ -15,7 +15,9 @@ export const Feed: FC = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		console.log(user)
 		if (!user) {
+			console.log(user)
 			navigate('/login');
 		} else {
 			fetchPosts()
@@ -25,6 +27,9 @@ export const Feed: FC = () => {
 		}
 	}, [user, navigate]);
 
+	if (!user) {
+        return <div>Loading...</div>;
+    }
 	if (!user) return null;
 
 	return (
