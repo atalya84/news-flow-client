@@ -8,6 +8,7 @@ import { Grid } from '@mui/material';
 import { Feed } from '../feed/Feed';
 import { LoadingButton } from '@mui/lab';
 import { signOut } from '../../services/auth.service';
+import { logout } from './styles';
 
 export const ProfilePage: FC = () => {
     const { user } = useContext(AuthContext);
@@ -41,7 +42,7 @@ export const ProfilePage: FC = () => {
                     <h2>{user.email}</h2>
                 </div>
                 <LoadingButton
-                    className='logout'
+                    sx={logout}
                     onClick={handleSignOut}
                     loadingPosition="end"
                     variant="contained"
