@@ -20,6 +20,7 @@ export interface FormProps {
 
 export interface ImageInputProps {
     onChange: (imageUrl: any | null) => void;
+    disabled?: boolean;
     className?: string;
     error?: boolean;
     src?: string;

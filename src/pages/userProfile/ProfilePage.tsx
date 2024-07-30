@@ -8,11 +8,12 @@ import { Grid } from '@mui/material';
 import { Feed } from '../feed/Feed';
 import { LoadingButton } from '@mui/lab';
 import { signOut } from '../../services/auth.service';
-import { logout } from './styles';
+import { logoutButton, editButton } from './styles';
 
 export const ProfilePage: FC = () => {
     const { user } = useContext(AuthContext);
     const [imageInfo, setImageInfo] = useState<File | null>(null);
+    const [edit, setEdit] = useState<boolean>(false);
     const [imgUrl, setImgUrl] = useState<string>("");
 
     useEffect(() => {
@@ -35,14 +36,26 @@ export const ProfilePage: FC = () => {
             <Grid item xs={7}>
                 <div className="profile-page-container">
                     <GradientRectangle />
-                    <DropFileInput onChange={setImageInfo} src={imgUrl} className='profile-input' />
+                    {edit ? (
+                        <DropFileInput onChange={setImageInfo} src={imgUrl} className='profile-edit' />
+                    ) : (
+                        <DropFileInput onChange={setImageInfo} src={imgUrl} className='profile-input' disabled={true} />
+                    )}
                 </div>
                 <div className='user-details'>
                     <h1>{user.name}</h1>
                     <h2>{user.email}</h2>
                 </div>
                 <LoadingButton
-                    sx={logout}
+                    sx={editButton}
+                    onClick={handleSignOut}
+                    loadingPosition="end"
+                    variant="contained"
+                >
+                    Edit Profile
+                </LoadingButton>
+                <LoadingButton
+                    sx={logoutButton}
                     onClick={handleSignOut}
                     loadingPosition="end"
                     variant="contained"

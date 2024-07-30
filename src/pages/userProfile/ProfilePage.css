@@ -11,10 +11,28 @@
     left: 20%;
     transform: translate(-50%, -50%);
     z-index: 1;
-  }
+}
 
-.profile-input .selected-image {
+.profile-edit {
+  width: 250px;
+  height: 250px;
+  border: 4px dashed #57534d;
+  border-radius: 50%;
+
+  position: absolute;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.profile-input .selected-image,
+.profile-edit .selected-image {
     height: 250px;
+}
+
+.profile-input:hover,
+.profile-input.dragover {
+  opacity: 1;
 }
 
 .popular-container {
@@ -25,6 +43,14 @@
 .user-details {
     margin-top: 190px;
     margin-left: 150px;
+}
+
+.user-details h1 {
+  font-size: 50px;
+}
+
+.user-details h2 {
+  font-size: 30px;
 }
 
 .logout {

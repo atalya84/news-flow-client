@@ -8,19 +8,3 @@ export interface IUser {
   imgUrl?: string;
   tokens?: string[];
 }
-
-const UserSchema = new mongoose.Schema<IUser>({
-  email: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  tokens: {
-    type: [String],
-  },
-});
-
-export default mongoose.model<IUser>("User", UserSchema);
