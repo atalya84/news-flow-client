@@ -5,6 +5,7 @@ import { Grid, Typography } from '@mui/material';
 import { fetchUserPosts } from '../../services/posts.service';
 import { AuthContext } from '../../Context';
 import { useNavigate } from 'react-router';
+import moment from 'moment';
 
 export const MyPosts: FC = () => {
 	const [posts, setPosts] = useState<IPost[]>([]);
@@ -39,7 +40,9 @@ export const MyPosts: FC = () => {
 						{'No Posts Found :('}
 					</Typography>
 				) : (
-					posts.map((post, index) => <FeedItem post={post} key={index} />)
+					posts
+						.sort((a, b) => moment(b.created).diff(moment(a.created)))
+						.map((post, index) => <FeedItem post={post} key={index} />)
 				)}
 			</Grid>
 		</Grid>
