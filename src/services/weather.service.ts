@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { GeoData } from '../types/weather';
-import { config } from '../config/config';
+import { config } from '../config/config.js';
 
 export const apiKey = config.API_KEY;
 

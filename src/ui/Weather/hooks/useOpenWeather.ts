@@ -2,7 +2,7 @@ import { useEffect, useReducer, useState } from 'react';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import { getIcon } from './iconsMap';
-import { config } from '../../../config/config';
+import { config } from '../../../config/config.js';
 
 export const formatDate = (dte, lang = 'en') => {
 	if (lang && lang !== 'en') {

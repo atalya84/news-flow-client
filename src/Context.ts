@@ -1,7 +1,7 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
 import { IUser } from './types/user.types';
 import { IPost } from './types/feed';
-import { config } from './config/config';
+import { config } from './config/config.js';
 
 export const AuthContext = createContext<{
 	user: IUser | null;
