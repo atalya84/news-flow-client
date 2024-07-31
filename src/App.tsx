@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { getActiveUser } from './services/auth.service';
 import { IUser } from './types/user.types';
 import { AuthContext, WeatherContext } from './Context';
-import { config } from './config/config';
+import { config } from './config/config.js';
 
 const lightTheme = createTheme({
 	palette: {
