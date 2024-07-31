@@ -15,3 +15,9 @@
     /* margin-bottom: 20px; */
   }
   
+.post-style{
+    width: 200px;
+    height: 200px;
+    border: 10px solid #202535;
+    border-radius: 5%;
+}
