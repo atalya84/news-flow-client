@@ -24,12 +24,14 @@ import { InputAdornment } from '@mui/material';
 import '../../ui/PostMenu/postStyles.css';
 import countryList from 'react-select-country-list';
 import { FieldValidation } from '../../types/validation';
+import { ReturnToHomePage } from '../../ui/app/GoToHomePage.js';
 
 interface OptionType {
 	value: string;
 	label: string;
 }
 export const Submit: FC = () => {
+	const { navigateToHomePage } = ReturnToHomePage();
 	const { user } = useContext(AuthContext);
 	const navigate = useNavigate();
 	const { state }: { state: { post: IPost } } = useLocation();
@@ -291,7 +293,6 @@ export const Submit: FC = () => {
 							sx={createButtonStyle}
 							onClick={validateForm}
 							loading={isLoading}
-							loadingPosition="end"
 							variant="contained"
 						>
 							{isEdit ? 'Edit' : 'Post'}
@@ -300,7 +301,7 @@ export const Submit: FC = () => {
 							variant="outlined"
 							color="error"
 							sx={errorButtonStyle}
-							onClick={() => navigate('/')}
+							onClick={navigateToHomePage}
 						>
 							Cancel
 						</LoadingButton>
