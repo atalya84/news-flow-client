@@ -49,10 +49,25 @@ export async function signOut(): Promise<string> {
 		apiClient.get('/auth/logout').then((response) => {
 			localStorage.removeItem('refreshToken');
 			localStorage.removeItem('accessToken');
+			localStorage.removeItem('user');
 			window.location.href = '/';
 		});
 		return 'User signed out successfully';
 	} catch (error) {
 		return 'An error occurred during sign out';
 	}
+}
+
+export async function editUser(user: IUser): Promise<IUser> {
+	return new Promise<IUser>((resolve, reject) => {
+		console.log('Updating user...');
+		apiClient
+			.put(`/users/${user._id}`, user)
+			.then((response) => {
+				resolve(response.data);
+			})
+			.catch((error) => {
+				reject(error);
+			});
+	});
 }
