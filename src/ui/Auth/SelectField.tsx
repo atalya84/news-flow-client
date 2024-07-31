@@ -6,7 +6,7 @@ import '../../ui/default.css';
 
 const TextInput: FC<TextFieldProps> = ({
 	value,
-	type = 'text',
+	type = 'select',
 	title,
 	icon,
 	className,
@@ -25,7 +25,7 @@ const TextInput: FC<TextFieldProps> = ({
 		<TextField
 			error={!isValueValid}
 			helperText={errorText}
-			className={`text-field ${className}`}
+			className={`select-field ${className}`}
 			variant="standard"
 			label={title}
 			value={value}
