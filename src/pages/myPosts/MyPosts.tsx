@@ -10,9 +10,13 @@ export const MyPosts: FC = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const { user } = useContext(AuthContext);
 
+	if (user) {
+		console.log('user is', user, 'in Submit.tsx');
+	}
+
 	useEffect(() => {
 		setIsLoading(true);
-		fetchUserPosts(user!._id)
+		fetchUserPosts(user?._id ?? '')
 			.then(setPosts)
 			.catch(console.error)
 			.finally(() => setIsLoading(false));

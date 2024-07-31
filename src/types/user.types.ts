@@ -1,7 +1,8 @@
 export interface IUser {
-	_id: string;
+	_id?: string;
+	password: string;
 	email: string;
-	name: string;
+	name?: string;
 	imgUrl?: string;
 	tokens?: string[];
 }
