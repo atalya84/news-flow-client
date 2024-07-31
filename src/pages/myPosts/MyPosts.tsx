@@ -21,7 +21,7 @@ export const MyPosts: FC = () => {
 			}
 		} else {
 			setIsLoading(true);
-			fetchUserPosts(user!._id)
+			fetchUserPosts(user._id!)
 				.then(setPosts)
 				.catch(console.error)
 				.finally(() => setIsLoading(false));

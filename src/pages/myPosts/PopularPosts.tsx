@@ -12,7 +12,7 @@ export const PopularPosts: FC = () => {
 
 	useEffect(() => {
 		setIsLoading(true);
-		fetchPopPosts(user!._id)
+		fetchPopPosts(user!._id!)
 			.then(setPosts)
 			.catch(console.error)
 			.finally(() => setIsLoading(false));
