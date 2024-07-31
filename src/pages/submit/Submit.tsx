@@ -222,6 +222,14 @@ export const Submit: FC = () => {
 					</Typography>
 				</Grid>
 				<Grid item xs={12}>
+					<DropFileInput
+						src={imgUrl}
+						onChange={setImageInfo}
+						error={!imageValid}
+						className="post-style"
+					/>
+				</Grid>
+				<Grid item xs={12}>
 					<TextInput
 						title="Title"
 						value={title}
@@ -274,13 +282,6 @@ export const Submit: FC = () => {
 						icon={<Notes />}
 						isValueValid={bodyValid.isValid}
 						errorText={bodyValid.errorText}
-					/>
-				</Grid>
-				<Grid item xs={12}>
-					<DropFileInput
-						src={imgUrl}
-						onChange={setImageInfo}
-						error={!imageValid}
 					/>
 				</Grid>
 				<Grid item xs={12}>
