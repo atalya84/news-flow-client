@@ -71,7 +71,6 @@ export const Submit: FC = () => {
 	}, []);
 
 	const countryChangeHandler = (selectedOption: SingleValue<OptionType>) => {
-		// Only set the value of the selected option, not the entire object
 		setCountry(selectedOption ? selectedOption.value : null);
 	};
 
@@ -123,7 +122,6 @@ export const Submit: FC = () => {
 		</components.SingleValue>
 	);
 
-	// Custom DropdownIndicator component to display an icon
 	const CustomDropdownIndicator = (
 		props: DropdownIndicatorProps<OptionType>,
 	) => <components.DropdownIndicator {...props}></components.DropdownIndicator>;
