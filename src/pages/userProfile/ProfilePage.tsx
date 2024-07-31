@@ -200,7 +200,6 @@ export const ProfilePage: FC = () => {
 							sx={editButton}
 							onClick={validateForm}
 							loading={loading}
-							loadingPosition="end"
 							variant="contained"
 						>
 							save
@@ -209,7 +208,6 @@ export const ProfilePage: FC = () => {
 						<LoadingButton
 							sx={logoutButton}
 							onClick={handleEditMode}
-							loadingPosition="end"
 							variant="contained"
 						>
 							Cancel
@@ -224,7 +222,6 @@ export const ProfilePage: FC = () => {
 						<LoadingButton
 							sx={editButton}
 							onClick={handleEditMode}
-							loadingPosition="end"
 							variant="contained"
 						>
 							Edit
@@ -233,7 +230,6 @@ export const ProfilePage: FC = () => {
 						<LoadingButton
 							sx={logoutButton}
 							onClick={signOut}
-							loadingPosition="end"
 							variant="contained"
 						>
 							Log Out

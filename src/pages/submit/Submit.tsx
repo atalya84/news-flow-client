@@ -293,7 +293,6 @@ export const Submit: FC = () => {
 							sx={createButtonStyle}
 							onClick={validateForm}
 							loading={isLoading}
-							loadingPosition="end"
 							variant="contained"
 						>
 							{isEdit ? 'Edit' : 'Post'}
