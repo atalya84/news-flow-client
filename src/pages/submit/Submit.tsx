@@ -115,14 +115,14 @@ export const Submit: FC = () => {
 					imageInfo!,
 					user?._id + '.' + getFileExt(imageInfo?.name),
 				);
-				newImgUrl = await uploadPostImage(formData);
+				newImgUrl = `${config.DOMAIN_BASE}/posts/${await uploadPostImage(formData)}`;
 			}
 			const postInput: IPostInput = {
 				title,
 				country,
 				source,
 				body,
-				imgUrl: `${config.DOMAIN_BASE}/posts/${newImgUrl}`,
+				imgUrl: newImgUrl,
 				userId: user?._id ?? '',
 			};
 			const postId: string = state?.post
@@ -161,7 +161,7 @@ export const Submit: FC = () => {
 			formIsValid += 1;
 		}
 
-		if (!imageInfo) {
+		if (!(imageInfo || imgUrl)) {
 			setImageValid(false);
 		} else {
 			setImageValid(true);
