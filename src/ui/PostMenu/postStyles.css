@@ -2,6 +2,16 @@
 	color: #fafaf3;
 	width: 60%;
 }
+.select-label-style-error{
+    color: #ff0000;
+	width: 60%;
+}
 .select-style {
 	margin-bottom: 20px;
 }
+.react-select-error  div{
+    color: #f73b3b;
+    font-weight: bold;
+    /* margin-bottom: 20px; */
+  }
+  
