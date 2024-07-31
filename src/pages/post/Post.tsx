@@ -21,7 +21,7 @@ import { PostMenu } from '../../ui/PostMenu/PostMenu';
 import { postCardStyle, postImageStyle } from './styles';
 import { AsyncImage } from 'loadable-image';
 import { getPostImageUrl } from '../../services/file-service';
-import { PostContext } from './context';
+import { PostContext } from '../../Context';
 import { AuthContext } from '../../Context';
 
 export const Post: FC = () => {
