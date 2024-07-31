@@ -1,5 +1,5 @@
 import { Grid, Stack, Typography } from '@mui/material';
-import { FC, useState, useEffect, useContext } from 'react';
+import { FC, useState, useEffect, useContext, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { IPost, IPostInput } from '../../types/feed';
 import { createPost, updatePost } from '../../services/posts.service';
@@ -9,11 +9,26 @@ import { uploadPostImage } from '../../services/file-service';
 import { getFileExt } from '../../utils';
 import axios from 'axios';
 import { AuthContext } from '../../Context';
-import { Public, Title, Link, Notes } from '@mui/icons-material';
 import { createButtonStyle, errorButtonStyle } from '../../ui/app/styles';
-import { config } from '../../config/config';
+import { config } from '../../config/config.js';
 import { LoadingButton } from '@mui/lab';
+import { Public, Title, Link, Notes, Height } from '@mui/icons-material';
+import Select, {
+	SingleValue,
+	components,
+	SingleValueProps,
+	DropdownIndicatorProps,
+	ControlProps,
+} from 'react-select';
+import { InputAdornment } from '@mui/material';
+import '../../ui/PostMenu/postStyles.css';
+import countryList from 'react-select-country-list';
+import { FieldValidation } from '../../types/validation';
 
+interface OptionType {
+	value: string;
+	label: string;
+}
 export const Submit: FC = () => {
 	const { user } = useContext(AuthContext);
 	const navigate = useNavigate();
@@ -26,6 +41,34 @@ export const Submit: FC = () => {
 	const [isEdit, setIsEdit] = useState<boolean>(false);
 	const [imageInfo, setImageInfo] = useState<File | null>(null);
 	const [imgUrl, setImgUrl] = useState<string>('');
+	const options: OptionType[] = useMemo(
+		() =>
+			countryList()
+				.getData()
+				.map((country) => ({
+					value: country.label,
+					label: country.label,
+				})),
+		[],
+	);
+
+	const [titleValid, setTitleValid] = useState<FieldValidation>({
+		isValid: true,
+		errorText: '',
+	});
+	const [countryValid, setCountryValid] = useState<FieldValidation>({
+		isValid: true,
+		errorText: '',
+	});
+	const [sourceValid, setSourceValid] = useState<FieldValidation>({
+		isValid: true,
+		errorText: '',
+	});
+	const [bodyValid, setBodyValid] = useState<FieldValidation>({
+		isValid: true,
+		errorText: '',
+	});
+	const [imageValid, setImageValid] = useState<boolean>(true);
 
 	useEffect(() => {
 		if (!user) {
@@ -46,6 +89,20 @@ export const Submit: FC = () => {
 			setImgUrl(state.post.imgUrl);
 		}
 	}, []);
+
+	const countryChangeHandler = (selectedOption: SingleValue<OptionType>) => {
+		setCountryValid(
+			selectedOption
+				? { isValid: true, errorText: '' }
+				: { isValid: false, errorText: '' },
+		);
+		setCountry(selectedOption ? selectedOption.value : '');
+	};
+
+	const selectedCountry = useMemo(
+		() => options.find((option) => option.label === country) || null,
+		[country, options],
+	);
 
 	const handleSubmit = async () => {
 		setIsLoading(true);
@@ -84,7 +141,79 @@ export const Submit: FC = () => {
 			setIsLoading(false);
 		}
 	};
+	const validateForm = () => {
+		var formIsValid = 0;
 
+		if (title.length === 0) {
+			setTitleValid({ isValid: false, errorText: "Title can't be empty" });
+		} else {
+			setTitleValid({ isValid: true, errorText: '' });
+			formIsValid += 1;
+		}
+
+		if (country.length === 0) {
+			setCountryValid({
+				isValid: false,
+				errorText: "Country can't be empty",
+			});
+		} else {
+			setCountryValid({ isValid: true, errorText: '' });
+			formIsValid += 1;
+		}
+
+		if (!imageInfo) {
+			setImageValid(false);
+		} else {
+			setImageValid(true);
+			formIsValid += 1;
+		}
+
+		if (source.length === 0) {
+			setSourceValid({
+				isValid: false,
+				errorText: "Link source can't be empty",
+			});
+		} else {
+			setSourceValid({ isValid: true, errorText: '' });
+			formIsValid += 1;
+		}
+
+		if (body.length === 0) {
+			setBodyValid({ isValid: false, errorText: "Body can't be empty" });
+		} else {
+			setBodyValid({ isValid: true, errorText: '' });
+			formIsValid += 1;
+		}
+
+		if (formIsValid === 5) {
+			handleSubmit();
+		}
+	};
+	const CustomSingleValue = (props: SingleValueProps<OptionType>) => (
+		<components.SingleValue {...props}>
+			{props.data.label}
+		</components.SingleValue>
+	);
+
+	const CustomDropdownIndicator = (
+		props: DropdownIndicatorProps<OptionType>,
+	) => <components.DropdownIndicator {...props}></components.DropdownIndicator>;
+	const CustomControl = (props: ControlProps<OptionType, false>) => (
+		<components.Control {...props}>
+			<InputAdornment position="start" sx={{ marginLeft: '10px' }}>
+				<Public />
+			</InputAdornment>
+			{props.children}
+		</components.Control>
+	);
+
+	const customStyles = {
+		control: (provided: any) => ({
+			...provided,
+			borderRadius: '50px',
+			height: '45px',
+		}),
+	};
 	return (
 		<Grid container justifyContent={'center'} sx={{ marginTop: '1rem' }}>
 			<Grid item container rowSpacing={2} xl={6} lg={11}>
@@ -99,15 +228,34 @@ export const Submit: FC = () => {
 						value={title}
 						onChange={setTitle}
 						icon={<Title />}
+						errorText={titleValid.errorText}
+						isValueValid={titleValid.isValid}
 					/>
 				</Grid>
-				<Grid item xs={12}>
-					<TextInput
-						title="Country"
-						value={country}
-						onChange={setCountry}
-						icon={<Public />}
-					/>
+				<Grid item xs={7.2}>
+					<div
+						className={
+							countryValid.isValid
+								? 'select-label-style'
+								: 'select-label-style-error'
+						}
+					>
+						Country
+					</div>
+					<div className="select-style">
+						<Select
+							options={options}
+							value={selectedCountry}
+							onChange={countryChangeHandler}
+							styles={customStyles}
+							components={{
+								SingleValue: CustomSingleValue,
+								DropdownIndicator: CustomDropdownIndicator,
+								Control: CustomControl,
+							}}
+							className={countryValid.isValid ? '' : 'react-select-error'}
+						/>
+					</div>
 				</Grid>
 				<Grid item xs={12}>
 					<TextInput
@@ -115,6 +263,8 @@ export const Submit: FC = () => {
 						value={source}
 						onChange={setSource}
 						icon={<Link />}
+						isValueValid={sourceValid.isValid}
+						errorText={sourceValid.errorText}
 					/>
 				</Grid>
 				<Grid item xs={12}>
@@ -123,13 +273,15 @@ export const Submit: FC = () => {
 						value={body}
 						onChange={setBody}
 						icon={<Notes />}
+						isValueValid={bodyValid.isValid}
+						errorText={bodyValid.errorText}
 					/>
 				</Grid>
 				<Grid item xs={12}>
 					<DropFileInput
 						src={imgUrl}
 						onChange={setImageInfo}
-						error={false}
+						error={!imageValid}
 					/>
 				</Grid>
 				<Grid item xs={12}>

@@ -11,8 +11,9 @@ export const Comments: FC<{ comments: IComment[] }> = ({
 }) => (
 	<Box sx={{ marginTop: '1rem' }}>
 		<CommentInput />
-		{comments.map((comment, index) => (
-			<CommentItem comment={comment} key={index} />
-		))}
+		{comments
+			.map((comment, index) => (
+				<CommentItem comment={comment} key={index} />
+			))}
 	</Box>
 );
