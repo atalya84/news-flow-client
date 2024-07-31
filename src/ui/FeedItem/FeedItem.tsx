@@ -22,7 +22,6 @@ import { IconButton } from '../IconButton/IconButton.tsx';
 import { IPost } from '../../types/feed.ts';
 import { useNavigate } from 'react-router-dom';
 import { AsyncImage } from 'loadable-image';
-import { getPostImageUrl } from '../../services/file-service.ts';
 import { IUser } from '../../types/user.types.ts';
 import { fetchUser } from '../../services/users.service.ts';
 import axios from 'axios';
@@ -91,7 +90,7 @@ const FeedItem: FC<{ post: IPost }> = ({ post }) => {
 				</Box>
 				<CardMedia>
 					<AsyncImage
-						src={getPostImageUrl(post.imgUrl)}
+						src={post.imgUrl}
 						alt="Post Image"
 						style={feedItemImageStyle}
 					/>

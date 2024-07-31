@@ -5,12 +5,13 @@ import { IPost, IPostInput } from '../../types/feed';
 import { createPost, updatePost } from '../../services/posts.service';
 import TextInput from '../../ui/Auth/TextField';
 import DropFileInput from '../../ui/Auth/ImageInput';
-import { getPostImageUrl, uploadPostImage } from '../../services/file-service';
+import { uploadPostImage } from '../../services/file-service';
 import { getFileExt } from '../../utils';
 import axios from 'axios';
 import { AuthContext } from '../../Context';
 import { Public, Title, Link, Notes } from '@mui/icons-material';
 import { createButtonStyle } from '../../ui/app/styles';
+import { config } from '../../config/config';
 
 export const Submit: FC = () => {
 	const { user } = useContext(AuthContext);
@@ -63,7 +64,7 @@ export const Submit: FC = () => {
 				country,
 				source,
 				body,
-				imgUrl: newImgUrl,
+				imgUrl: `${config.DOMAIN_BASE}/posts/${newImgUrl}`,
 				userId: user?._id ?? '',
 			};
 			const postId: string = state?.post
@@ -125,7 +126,7 @@ export const Submit: FC = () => {
 				</Grid>
 				<Grid item xs={12}>
 					<DropFileInput
-						src={getPostImageUrl(imgUrl)}
+						src={imgUrl}
 						onChange={setImageInfo}
 						error={false}
 					/>
