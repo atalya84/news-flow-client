@@ -147,6 +147,8 @@ export const ProfilePage: FC = () => {
 
 		if (shouldUpdateUser || imageInfo) {
 			handleEditUser();
+		} else {
+			handleEditMode()
 		}
 	};
 
@@ -203,6 +205,15 @@ export const ProfilePage: FC = () => {
 						>
 							save
 						</LoadingButton>
+						
+						<LoadingButton
+							sx={logoutButton}
+							onClick={handleEditMode}
+							loadingPosition="end"
+							variant="contained"
+						>
+							Cancel
+						</LoadingButton>
 					</>
 				) : (
 					<>
@@ -218,16 +229,17 @@ export const ProfilePage: FC = () => {
 						>
 							Edit
 						</LoadingButton>
+						
+						<LoadingButton
+							sx={logoutButton}
+							onClick={signOut}
+							loadingPosition="end"
+							variant="contained"
+						>
+							Log Out
+						</LoadingButton>
 					</>
 				)}
-				<LoadingButton
-					sx={logoutButton}
-					onClick={signOut}
-					loadingPosition="end"
-					variant="contained"
-				>
-					Log Out
-				</LoadingButton>
 			</Grid>
 			<Grid item xs={4}>
 				<div className="popular-container">
