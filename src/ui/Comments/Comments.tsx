@@ -11,8 +11,12 @@ export const Comments: FC<{ comments: IComment[] }> = ({
 }) => (
 	<Box sx={{ marginTop: '1rem' }}>
 		<CommentInput />
-		{comments.map((comment, index) => (
-			<CommentItem comment={comment} key={index} />
-		))}
+		{comments
+			.sort((a, b) => {
+				return new Date(b.created).getTime() - new Date(a.created).getTime();
+			})
+			.map((comment, index) => (
+				<CommentItem comment={comment} key={index} />
+			))}
 	</Box>
 );
