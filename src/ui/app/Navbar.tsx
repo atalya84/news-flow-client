@@ -66,7 +66,7 @@ export const Navbar = () => {
 					</NavButton>
 				</Stack>
 				<Button
-					startIcon={<Add />}
+					endIcon={<Add />}
 					sx={createButtonStyle}
 					onClick={goToCreatePost}
 					variant="outlined"
