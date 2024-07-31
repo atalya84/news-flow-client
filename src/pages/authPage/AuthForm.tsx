@@ -19,6 +19,7 @@ import axios from 'axios';
 import { getFileExt } from '../../utils';
 import { AuthContext } from '../../Context';
 import { registerGoogle } from '../../services/auth.service';
+import { config } from '../../config/config';
 
 const MIN_PASSWORD_DIGITS = 8;
 
@@ -72,7 +73,7 @@ export const AuthForm: FC<FormProps> = ({ type, onClick }) => {
                 user = {
                     email: email,
                     name: name,
-                    imgUrl: imageUrl,
+                    imgUrl: `${config.DOMAIN_BASE}/profiles/${imageUrl}`,
                     password: password
                 }
             } else {
