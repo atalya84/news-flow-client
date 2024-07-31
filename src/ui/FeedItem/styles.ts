@@ -67,6 +67,7 @@ export const linkStyle: SxProps = {
 
 export const bodyStyle: CSSProperties= {
 	color: '#DDDDDD',
+	padding: '10px'
 }
 
 export const feedItemImageStyle: CSSProperties = {width: 150, height: 150, borderRadius: '1rem'}
