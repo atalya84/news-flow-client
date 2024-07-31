@@ -17,6 +17,21 @@ export const cardStyle: SxProps = {
 	},
 };
 
+export const reducedCardStyle: SxProps = {
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'space-between',
+	borderRadius: '1rem',
+	backgroundColor: 'transparent',
+	color: 'white',
+	paddingY: '5px',
+	marginY: '8px',
+	boxShadow: 'none',
+	':hover': {
+		backgroundColor: '#77777711',
+	},
+};
+
 export const cardBoxStyle: SxProps = {
     display: 'flex',
 	flexDirection: 'column',
@@ -51,3 +66,4 @@ export const linkStyle: SxProps = {
 }
 
 export const feedItemImageStyle: CSSProperties = {width: 150, height: 150, borderRadius: '1rem'}
+export const reducedFeedItemImageStyle: CSSProperties = {width: 130, height: 120, borderRadius: '1rem'}

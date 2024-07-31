@@ -1,11 +1,10 @@
 import { FC, useContext, useEffect, useState } from 'react';
 import DropFileInput from '../../ui/Auth/ImageInput';
 import { AuthContext } from '../../Context';
-import { config } from '../../config/config';
 import GradientRectangle from '../../ui/Auth/GradientRectangle';
 import './ProfilePage.css';
 import { Grid } from '@mui/material';
-import { PopularPosts } from '../myPosts/PopularPosts';
+import { PopularPosts } from './PopularPosts';
 import { LoadingButton } from '@mui/lab';
 import { editUser, signOut } from '../../services/auth.service';
 import { logoutButton, editButton } from './styles';
