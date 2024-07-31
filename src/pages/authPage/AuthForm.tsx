@@ -18,10 +18,11 @@ import { IUser } from '../../types/user.types';
 import axios from 'axios';
 import { getFileExt } from '../../utils';
 import { AuthContext } from '../../Context';
+import { registerGoogle } from '../../services/auth.service';
 
 const MIN_PASSWORD_DIGITS = 8;
 
-export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin }) => {
+export const AuthForm: FC<FormProps> = ({ type, onClick }) => {
 
     const {setUser} = useContext(AuthContext)
     const navigate = useNavigate()
@@ -161,18 +162,20 @@ export const AuthForm: FC<FormProps> = ({ type, onClick, onGoogleLogin }) => {
     }
 
 
-    const onGoogleLoginSuccess = useCallback(async (response: CredentialResponse) => {
-        if (onGoogleLogin) {
-            setIsLoading(true);
-            try {
-                await onGoogleLogin(response);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsLoading(false);
+    const onGoogleLoginSuccess = async (response: CredentialResponse) => {
+        setIsLoading(true);
+        try {
+            const activeUser = await registerGoogle(response);
+            if (activeUser){
+                setUser(activeUser)
+                navigate('/')
             }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
         }
-    }, [onGoogleLogin]);
+    };
 
     const onGoogleLoginFailure = () => {
         console.log("Google login failed");
