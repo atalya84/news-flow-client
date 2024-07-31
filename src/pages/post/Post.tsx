@@ -13,7 +13,7 @@ import { useNavigate, useParams } from 'react-router';
 import { deletePost, fetchPost } from '../../services/posts.service';
 import { fetchUser } from '../../services/users.service';
 import { IUser } from '../../types/user.types';
-import { linkStyle } from '../../ui/FeedItem/styles';
+import { linkStyle, bodyStyle } from '../../ui/FeedItem/styles';
 import { MoreHoriz } from '@mui/icons-material';
 import { Comments } from '../../ui/Comments/Comments';
 import { UserTitle } from '../../ui/UserTitle/UserTitle';
@@ -66,7 +66,7 @@ export const Post: FC = () => {
 				justifyContent={'center'}
 				sx={{ paddingTop: '2rem', color: 'white' }}
 			>
-				<Grid item lg={8} xl={5}>
+				<Grid item lg={8} xl={6}>
 					{isLoading ? (
 						<p>Loading...</p>
 					) : (
@@ -114,11 +114,17 @@ export const Post: FC = () => {
 																padding: '10px',
 															}}
 														>
-															{post.source}
+															Click To Go To Source
 														</Link>
 													</Typography>
 												)}
 											</CardActionArea>
+											<Typography 
+												variant="h6"
+												sx={bodyStyle}
+											>
+												{post.body}
+											</Typography>
 										</Card>
 									</Grid>
 									<Grid item xs={12}>

@@ -54,7 +54,7 @@ export const headlineStyle: SxProps = {
 }
 
 export const linkStyle: SxProps = {
-	color: '#DDDDDD',
+	color: '#f9b334',
 	textDecoration: 'none',
 	':hover': {
 		textDecorationLine: 'underline'
@@ -63,6 +63,10 @@ export const linkStyle: SxProps = {
 	overflow: 'hidden',
 	WebkitBoxOrient: 'vertical',
 	WebkitLineClamp: 1,
+}
+
+export const bodyStyle: CSSProperties= {
+	color: '#DDDDDD',
 }
 
 export const feedItemImageStyle: CSSProperties = {width: 150, height: 150, borderRadius: '1rem'}
