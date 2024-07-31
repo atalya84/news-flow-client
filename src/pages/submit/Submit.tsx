@@ -12,6 +12,7 @@ import { AuthContext } from '../../Context';
 import { Public, Title, Link, Notes } from '@mui/icons-material';
 import { createButtonStyle } from '../../ui/app/styles';
 import { config } from '../../config/config';
+import { FieldValidation } from '../../types/validation';
 
 export const Submit: FC = () => {
 	const { user } = useContext(AuthContext);
@@ -25,6 +26,24 @@ export const Submit: FC = () => {
 	const [isEdit, setIsEdit] = useState<boolean>(false);
 	const [imageInfo, setImageInfo] = useState<File | null>(null);
 	const [imgUrl, setImgUrl] = useState<string>('');
+
+	const [titleValid, setTitleValid] = useState<FieldValidation>({
+		isValid: true,
+		errorText: '',
+	});
+	const [countryValid, setCountryValid] = useState<FieldValidation>({
+		isValid: true,
+		errorText: '',
+	});
+	const [sourceValid, setSourceValid] = useState<FieldValidation>({
+		isValid: true,
+		errorText: '',
+	});
+	const [bodyValid, setBodyValid] = useState<FieldValidation>({
+		isValid: true,
+		errorText: '',
+	});
+	const [imageValid, setImageValid] = useState<boolean>(true);
 
 	useEffect(() => {
 		if (!user) {
@@ -83,6 +102,54 @@ export const Submit: FC = () => {
 			setIsLoading(false);
 		}
 	};
+	const validateForm = () => {
+		var formIsValid = 0;
+
+		if (title.length === 0) {
+			setTitleValid({ isValid: false, errorText: "Title can't be empty" });
+		} else {
+			setTitleValid({ isValid: true, errorText: '' });
+			formIsValid += 1;
+		}
+
+		if (country.length === 0) {
+			setCountryValid({
+				isValid: false,
+				errorText: "Country can't be empty",
+			});
+		} else {
+			setCountryValid({ isValid: true, errorText: '' });
+			formIsValid += 1;
+		}
+
+		if (!imageInfo) {
+			setImageValid(false);
+		} else {
+			setImageValid(true);
+			formIsValid += 1;
+		}
+
+		if (source.length === 0) {
+			setSourceValid({
+				isValid: false,
+				errorText: "Link source can't be empty",
+			});
+		} else {
+			setSourceValid({ isValid: true, errorText: '' });
+			formIsValid += 1;
+		}
+
+		if (body.length === 0) {
+			setBodyValid({ isValid: false, errorText: "Body can't be empty" });
+		} else {
+			setBodyValid({ isValid: true, errorText: '' });
+			formIsValid += 1;
+		}
+
+		if (formIsValid === 5) {
+			handleSubmit();
+		}
+	};
 
 	return (
 		<Grid container justifyContent={'center'} sx={{ marginTop: '1rem' }}>
@@ -98,6 +165,8 @@ export const Submit: FC = () => {
 						value={title}
 						onChange={setTitle}
 						icon={<Title />}
+						errorText={titleValid.errorText}
+						isValueValid={titleValid.isValid}
 					/>
 				</Grid>
 				<Grid item xs={12}>
@@ -114,6 +183,8 @@ export const Submit: FC = () => {
 						value={source}
 						onChange={setSource}
 						icon={<Link />}
+						isValueValid={sourceValid.isValid}
+						errorText={sourceValid.errorText}
 					/>
 				</Grid>
 				<Grid item xs={12}>
@@ -122,20 +193,22 @@ export const Submit: FC = () => {
 						value={body}
 						onChange={setBody}
 						icon={<Notes />}
+						isValueValid={bodyValid.isValid}
+						errorText={bodyValid.errorText}
 					/>
 				</Grid>
 				<Grid item xs={12}>
 					<DropFileInput
 						src={imgUrl}
 						onChange={setImageInfo}
-						error={false}
+						error={!imageValid}
 					/>
 				</Grid>
 				<Grid item xs={12}>
 					<Stack spacing={2} direction="row">
 						<Button
 							variant="outlined"
-							onClick={handleSubmit}
+							onClick={validateForm}
 							sx={createButtonStyle}
 						>
 							{isEdit ? 'Edit' : 'Post'}
