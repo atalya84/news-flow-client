@@ -1,7 +1,7 @@
 import { FC, useContext, useEffect, useState } from 'react';
 import DropFileInput from '../../ui/Auth/ImageInput';
 import { AuthContext } from '../../Context';
-import { config } from "../../config/config";
+import { config } from "../../config/config.js";
 import GradientRectangle from '../../ui/Auth/GradientRectangle';
 import './ProfilePage.css'
 import { Grid } from '@mui/material';

@@ -1,6 +1,6 @@
 import apiClient from './api-client';
 import { IUploadResponse } from '../types/File';
-import { config } from '../config/config';
+import { config } from '../config/config.js';
 
 export async function uploadPhoto(formData: FormData): Promise<string> {
 	try {
