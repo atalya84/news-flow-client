@@ -64,9 +64,9 @@ const DropFileInput: FC<ImageInputProps> = ({
 					{imageSrc ? (
 						<img src={imageSrc} alt="Selected" className="selected-image" />
 					) : error ? (
-						<img src={'imageError.png'} alt="Error" className="preview-image" />
+						<img src={'/imageError.png'} alt="Error" className="preview-image" />
 					) : (
-						<img src={'addImage.png'} alt="Upload" className="preview-image" />
+						<img src={'/addImage.png'} alt="Upload" className="preview-image" />
 					)}
 				</div>
 				<input

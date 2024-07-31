@@ -289,7 +289,7 @@ export const Submit: FC = () => {
 					<Stack spacing={2} direction="row">
 						<LoadingButton
 							sx={createButtonStyle}
-							onClick={handleSubmit}
+							onClick={validateForm}
 							loading={isLoading}
 							loadingPosition="end"
 							variant="contained"

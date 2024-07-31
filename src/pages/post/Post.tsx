@@ -79,6 +79,7 @@ export const Post: FC = () => {
 									{user && <UserTitle user={user} timestamp={post.created} />}
 								</Grid>
 								<Grid item container xs={1} justifyContent={'end'}>
+								{post?.userId === currentUser?._id && (
 									<IconButton
 										ref={anchorRef}
 										id="composition-button"
@@ -90,6 +91,7 @@ export const Post: FC = () => {
 									>
 										<MoreHoriz />
 									</IconButton>
+								)}
 								</Grid>
 								<Grid item xs={12}>
 									<Typography variant="h5">{post.title}</Typography>
