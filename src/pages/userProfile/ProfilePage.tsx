@@ -38,7 +38,7 @@ export const ProfilePage: FC = () => {
 				navigate('/login');
 			}
 		} else {
-			setImgUrl(`${config.DOMAIN_BASE}/profiles/${currentUser.imgUrl}`);
+			setImgUrl(currentUser.imgUrl!);
 			setEmail(currentUser.email)
 			setName(currentUser.name!)
         }

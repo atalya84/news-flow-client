@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../Context';
 import { IUser } from '../types/user.types';
 import apiClient from './api-client';
+import { CredentialResponse } from '@react-oauth/google';
 
 export async function getActiveUser(): Promise<IUser | null> {
 	if (!localStorage.getItem('accessToken')) return null;
@@ -70,4 +71,19 @@ export async function editUser(user: IUser): Promise<IUser> {
 				reject(error);
 			});
 	});
+}
+
+export async function registerGoogle(credentialResponse: CredentialResponse): Promise<any> {
+    return new Promise<IUser>((resolve, reject) => {
+        console.log("google: registerGoogle ...");
+        apiClient.post("/auth/google", credentialResponse).then((response) => {
+            localStorage.setItem('refreshToken', response.data.refreshToken);
+            localStorage.setItem('accessToken', response.data.accessToken);
+			localStorage.setItem('user', JSON.stringify(response.data.user));
+            resolve(response.data.user);
+        }).catch((error) => {
+            console.log(error);
+            reject(error);
+        })
+    })
 }

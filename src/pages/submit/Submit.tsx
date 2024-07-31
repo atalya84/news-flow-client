@@ -5,7 +5,7 @@ import { IPost, IPostInput } from '../../types/feed';
 import { createPost, updatePost } from '../../services/posts.service';
 import TextInput from '../../ui/Auth/TextField';
 import DropFileInput from '../../ui/Auth/ImageInput';
-import { getPostImageUrl, uploadPostImage } from '../../services/file-service';
+import { uploadPostImage } from '../../services/file-service';
 import { getFileExt } from '../../utils';
 import axios from 'axios';
 import { AuthContext } from '../../Context';
@@ -21,6 +21,7 @@ import Select, {
 import { Icon, InputAdornment } from '@mui/material';
 import '../../ui/PostMenu/postStyles.css';
 import countryList from 'react-select-country-list';
+import { config } from '../../config/config';
 
 interface OptionType {
 	value: string;
@@ -97,7 +98,7 @@ export const Submit: FC = () => {
 				country,
 				source,
 				body,
-				imgUrl: newImgUrl,
+				imgUrl: `${config.DOMAIN_BASE}/posts/${newImgUrl}`,
 				userId: user?._id ?? '',
 			};
 			const postId: string = state?.post
@@ -191,11 +192,7 @@ export const Submit: FC = () => {
 					/>
 				</Grid>
 				<Grid item xs={12}>
-					<DropFileInput
-						src={getPostImageUrl(imgUrl)}
-						onChange={setImageInfo}
-						error={false}
-					/>
+					<DropFileInput src={imgUrl} onChange={setImageInfo} error={false} />
 				</Grid>
 				<Grid item xs={12}>
 					<Stack spacing={2} direction="row">

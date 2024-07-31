@@ -20,7 +20,6 @@ import { UserTitle } from '../../ui/UserTitle/UserTitle';
 import { PostMenu } from '../../ui/PostMenu/PostMenu';
 import { postCardStyle, postImageStyle } from './styles';
 import { AsyncImage } from 'loadable-image';
-import { getPostImageUrl } from '../../services/file-service';
 import { PostContext } from '../../Context';
 import { AuthContext } from '../../Context';
 
@@ -97,9 +96,9 @@ export const Post: FC = () => {
 									</Grid>
 									<Grid item xs={12}>
 										<Card variant={'outlined'} sx={postCardStyle}>
-											<CardMedia image={getPostImageUrl(post.imgUrl)}>
+											<CardMedia image={post.imgUrl}>
 												<AsyncImage
-													src={getPostImageUrl(post.imgUrl)}
+													src={post.imgUrl}
 													style={postImageStyle}
 												/>
 											</CardMedia>
