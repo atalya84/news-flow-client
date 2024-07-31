@@ -9,9 +9,9 @@ import { Add } from '@mui/icons-material';
 
 enum NavOptions {
 	NONE,
-	FEED,
-	MY_POSTS,
-	PROFILE,
+	FEED = '/',
+	MY_POSTS = '/posts/self',
+	PROFILE = '/profile',
 }
 
 export const Navbar = () => {
@@ -33,7 +33,9 @@ export const Navbar = () => {
 		navigate('/profile');
 	}, []);
 
-	const [selected, setselected] = useState<NavOptions>(NavOptions.FEED);
+	const [selected, setselected] = useState<NavOptions>(
+		window.location.pathname as NavOptions,
+	);
 
 	const NavButton: FC<ButtonProps & { page: NavOptions }> = (props) => {
 		const { page, ...buttonProps } = props;

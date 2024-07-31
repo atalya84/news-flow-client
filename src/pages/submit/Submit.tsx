@@ -25,9 +25,14 @@ export const Submit: FC = () => {
 	const [imageInfo, setImageInfo] = useState<File | null>(null);
 	const [imgUrl, setImgUrl] = useState<string>('');
 
-	if (user) {
-		console.log('user is', user, 'in Submit.tsx');
-	}
+	useEffect(() => {
+		if (!user) {
+			const storedUser = JSON.parse(localStorage.getItem('user')!);
+			if (!storedUser) {
+				navigate('/login');
+			}
+		}
+	}, [user, navigate]);
 
 	useEffect(() => {
 		if (state?.post) {

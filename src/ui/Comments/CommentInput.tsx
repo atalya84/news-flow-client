@@ -4,7 +4,7 @@ import { ICommentInput } from '../../types/feed';
 import TextInput from '../Auth/TextField';
 import { Comment, Send } from '@mui/icons-material';
 import { commentButtonStyle } from './styles';
-import { PostContext } from '../../pages/post/context';
+import { PostContext } from '../../Context';
 import axios from 'axios';
 import { createComment } from '../../services/posts.service';
 import { AuthContext } from '../../Context';
