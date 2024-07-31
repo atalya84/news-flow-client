@@ -1,3 +1,3 @@
 export const config = {
-    "DOMAIN_BASE": "http://localhost:4000"
+    "DOMAIN_BASE": "https://10.10.248.106:443"
 }
