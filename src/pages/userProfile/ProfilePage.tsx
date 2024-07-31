@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import DropFileInput from '../../ui/Auth/ImageInput';
 import { AuthContext } from '../../Context';
 import { config } from '../../config/config';
