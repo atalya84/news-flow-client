@@ -10,6 +10,7 @@ import moment from 'moment';
 import ReactWeather from '../../ui/Weather/components/ReactWeather';
 import useOpenWeather from '../../ui/Weather/hooks/useOpenWeather';
 import { apiKey, getGeoData } from '../../services/weather.service';
+import { LoadingPage } from '../../ui';
 
 export const Feed: FC = () => {
 	const { user } = useContext(AuthContext);
@@ -54,6 +55,8 @@ export const Feed: FC = () => {
 
 	if (!user) return null;
 
+	if (isFeedLoading) return <LoadingPage/>
+
 	return (
 		<Grid container columnSpacing={1} rowSpacing={1}>
 			<Grid item xl={3} lg={12}>
@@ -67,11 +70,7 @@ export const Feed: FC = () => {
 				/>
 			</Grid>
 			<Grid item xl={6} lg={12}>
-				{isFeedLoading ? (
-					<Typography variant="h5" color={'white'}>
-						Loading...
-					</Typography>
-				) : posts.length === 0 ? (
+				{ posts.length === 0 ? (
 					<Typography variant="h5" color={'white'}>
 						{'No Posts Found :('}
 					</Typography>

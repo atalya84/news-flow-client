@@ -1,0 +1,7 @@
+.page-loading-animation {
+    display: flex;
+    justify-content: center;
+    height: 80vh; /* 100% of the viewport height */
+    width: 100vw;
+    align-items: center;
+}

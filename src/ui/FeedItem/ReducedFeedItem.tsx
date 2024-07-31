@@ -4,7 +4,6 @@ import {
 	CardMedia,
 	Chip,
 	Divider,
-	Link,
 	Typography,
 } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
@@ -12,22 +11,20 @@ import './styles.ts';
 import {
 	cardBoxStyle,
 	cardContentStyle,
-	cardStyle,
-	feedItemImageStyle,
+	reducedCardStyle,
+	reducedFeedItemImageStyle,
 	headlineStyle,
-	linkStyle,
 } from './styles.ts';
-import { Comment, Share } from '@mui/icons-material';
-import { IconButton } from '../IconButton/IconButton.tsx';
 import { IPost } from '../../types/feed.ts';
 import { useNavigate } from 'react-router-dom';
 import { AsyncImage } from 'loadable-image';
 import { IUser } from '../../types/user.types.ts';
 import { fetchUser } from '../../services/users.service.ts';
 import axios from 'axios';
-import { UserTitle } from '../UserTitle/UserTitle.tsx';
+import { IconButton } from '../IconButton/IconButton.tsx';
+import { Comment } from '@mui/icons-material';
 
-const FeedItem: FC<{ post: IPost }> = ({ post }) => {
+const ReducedFeedItem: FC<{ post: IPost }> = ({ post }) => {
 	const navigate = useNavigate();
 	const [user, setUser] = useState<IUser>();
 
@@ -44,9 +41,8 @@ const FeedItem: FC<{ post: IPost }> = ({ post }) => {
 
 	return (
 		<>
-			<Card sx={cardStyle} onClick={() => navigate(`/posts/${post._id}`)}>
+			<Card sx={reducedCardStyle} onClick={() => navigate(`/posts/${post._id}`)}>
 				<Box sx={cardBoxStyle}>
-					{user && <UserTitle user={user} timestamp={post.created} />}
 					<Box sx={cardContentStyle}>
 						<Typography component="div" variant="h6" sx={headlineStyle}>
 							{post.title}
@@ -62,17 +58,6 @@ const FeedItem: FC<{ post: IPost }> = ({ post }) => {
 							}}
 						/>
 					</Box>
-					{post.source && (
-						<Link
-							href={post.source}
-							target="_blank"
-							rel="noopener"
-							sx={linkStyle}
-							onClick={(e) => e.stopPropagation()}
-						>
-							{post.source}
-						</Link>
-					)}
 					<Box
 						sx={{
 							display: 'flex',
@@ -81,18 +66,13 @@ const FeedItem: FC<{ post: IPost }> = ({ post }) => {
 						}}
 					>
 						<IconButton icon={<Comment />} label={post.comments?.length || 0} />
-						<IconButton
-							icon={<Share />}
-							onClick={(e) => e.stopPropagation()}
-							label={'Share'}
-						/>
 					</Box>
 				</Box>
 				<CardMedia>
 					<AsyncImage
 						src={post.imgUrl}
 						alt="Post Image"
-						style={feedItemImageStyle}
+						style={reducedFeedItemImageStyle}
 					/>
 				</CardMedia>
 			</Card>
@@ -101,4 +81,4 @@ const FeedItem: FC<{ post: IPost }> = ({ post }) => {
 	);
 };
 
-export default FeedItem;
+export default ReducedFeedItem;

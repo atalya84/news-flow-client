@@ -38,6 +38,7 @@ apiClient.interceptors.response.use(
             // if refresh returned 401, logout and return to home page
             localStorage.removeItem('refreshToken');
             localStorage.removeItem('accessToken');
+            localStorage.removeItem('user');
             window.location.href = '/';
         }
 

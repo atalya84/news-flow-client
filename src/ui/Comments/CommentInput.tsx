@@ -19,7 +19,7 @@ export const CommentInput: FC = () => {
 		try {
 			const commentInput: ICommentInput = {
 				text,
-				userId: user?._id ?? '',
+				userId: user!._id!,
 			};
 			if (post) setPost(await createComment(post._id, commentInput));
 		} catch (err) {

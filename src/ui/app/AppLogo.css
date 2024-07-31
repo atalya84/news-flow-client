@@ -1,6 +1,7 @@
 .app-logo {
     display: flex;
     flex-direction: row;
+    margin-right: 2.5em
 }
 
 .app-logo .app-logo-title {

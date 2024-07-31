@@ -53,9 +53,14 @@
   font-size: 30px;
 }
 
-.logout {
-  border-radius: 20px;
-  background-color: transparent; 
-  color: #f9b334;
-  border: 2px solid #f9b334;
+.user-form {
+  display: flex;
+	flex-direction: column;
+  gap: 16px;
+  margin-top: 190px;
+  margin-left: 150px;
+}
+
+.user-form .fields {
+  width: 40%;
 }

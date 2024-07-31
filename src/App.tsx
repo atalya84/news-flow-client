@@ -36,7 +36,7 @@ function App() {
 	return (
 		<div className="news-flow-app">
 			<AuthContext.Provider value={{ user, setUser }}>
-				<GoogleOAuthProvider clientId="844336525550-qe2lm7m034t7m25dsr8gn70e33eq3gp5.apps.googleusercontent.com">
+				<GoogleOAuthProvider clientId="844336525550-dvdbghpatmomo01jjt5fi4l7e5cadsbs.apps.googleusercontent.com">
 					<WeatherContext.Provider
 						value={useState<string>(config.DEFAULT_LOCATION)}
 					>

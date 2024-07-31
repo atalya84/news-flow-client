@@ -6,6 +6,7 @@ import { fetchUserPosts } from '../../services/posts.service';
 import { AuthContext } from '../../Context';
 import { useNavigate } from 'react-router';
 import moment from 'moment';
+import { LoadingPage } from '../../ui';
 
 export const MyPosts: FC = () => {
 	const [posts, setPosts] = useState<IPost[]>([]);
@@ -32,14 +33,12 @@ export const MyPosts: FC = () => {
 		}
 	}, [user, navigate]);
 
+	if (isLoading) return <LoadingPage/>
+
 	return (
 		<Grid container justifyContent={'center'}>
 			<Grid item xl={6} lg={12}>
-				{isLoading ? (
-					<Typography variant="h5" color={'white'}>
-						Loading...
-					</Typography>
-				) : posts.length === 0 ? (
+				{ posts.length === 0 ? (
 					<Typography variant="h5" color={'white'}>
 						{'No Posts Found :('}
 					</Typography>

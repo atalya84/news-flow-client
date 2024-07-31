@@ -1,0 +1,23 @@
+.select-label-style {
+	color: #fafaf3;
+	width: 60%;
+}
+.select-label-style-error{
+    color: #ff0000;
+	width: 60%;
+}
+.select-style {
+	margin-bottom: 20px;
+}
+.react-select-error  div{
+    color: #f73b3b;
+    font-weight: bold;
+    /* margin-bottom: 20px; */
+  }
+  
+.post-style{
+    width: 200px;
+    height: 200px;
+    border: 10px solid #202535;
+    border-radius: 15%;
+}
