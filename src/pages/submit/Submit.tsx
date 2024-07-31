@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Stack, Typography } from '@mui/material';
 import { FC, useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { IPost, IPostInput } from '../../types/feed';
@@ -9,6 +9,8 @@ import { getPostImageUrl, uploadPostImage } from '../../services/file-service';
 import { getFileExt } from '../../utils';
 import axios from 'axios';
 import { AuthContext } from '../../Context';
+import { Public, Title, Link, Notes } from '@mui/icons-material';
+import { createButtonStyle } from '../../ui/app/styles';
 
 export const Submit: FC = () => {
 	const { user } = useContext(AuthContext);
@@ -85,16 +87,36 @@ export const Submit: FC = () => {
 					</Typography>
 				</Grid>
 				<Grid item xs={12}>
-					<TextInput title="Title" value={title} onChange={setTitle} />
+					<TextInput
+						title="Title"
+						value={title}
+						onChange={setTitle}
+						icon={<Title />}
+					/>
 				</Grid>
 				<Grid item xs={12}>
-					<TextInput title="Country" value={country} onChange={setCountry} />
+					<TextInput
+						title="Country"
+						value={country}
+						onChange={setCountry}
+						icon={<Public />}
+					/>
 				</Grid>
 				<Grid item xs={12}>
-					<TextInput title="Link URL" value={source} onChange={setSource} />
+					<TextInput
+						title="Link URL"
+						value={source}
+						onChange={setSource}
+						icon={<Link />}
+					/>
 				</Grid>
 				<Grid item xs={12}>
-					<TextInput title="Body" value={body} onChange={setBody} />
+					<TextInput
+						title="Body"
+						value={body}
+						onChange={setBody}
+						icon={<Notes />}
+					/>
 				</Grid>
 				<Grid item xs={12}>
 					<DropFileInput
@@ -104,9 +126,23 @@ export const Submit: FC = () => {
 					/>
 				</Grid>
 				<Grid item xs={12}>
-					<Button variant="contained" onClick={handleSubmit}>
-						{isEdit ? 'Edit' : 'Post'}
-					</Button>
+					<Stack spacing={2} direction="row">
+						<Button
+							variant="outlined"
+							onClick={handleSubmit}
+							sx={createButtonStyle}
+						>
+							{isEdit ? 'Edit' : 'Post'}
+						</Button>
+						<Button
+							variant="outlined"
+							color="error"
+							sx={{ borderRadius: '2rem' }}
+							onClick={() => navigate('/')}
+						>
+							Cancel
+						</Button>
+					</Stack>
 				</Grid>
 			</Grid>
 		</Grid>
