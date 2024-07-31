@@ -17,6 +17,7 @@ import { getFileExt } from '../../utils';
 import { uploadPhoto } from '../../services/file-service';
 import { IUser } from '../../types/user.types';
 import { LoadingPage } from '../../ui';
+import { config } from '../../config/config';
 
 export const ProfilePage: FC = () => {
 	const currentUser = useContext(AuthContext).user;
@@ -89,7 +90,7 @@ export const ProfilePage: FC = () => {
 					_id: currentUser._id,
 					email: email,
 					name: name,
-					imgUrl: imageUrl,
+					imgUrl: `${config.DOMAIN_BASE}/profiles/${imageUrl}`,
 				};
 			} else {
 				alert('There was an error when uploading your profile picture');
