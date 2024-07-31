@@ -1,4 +1,4 @@
-import { Button, Grid, Stack, Typography } from '@mui/material';
+import { Grid, Stack, Typography } from '@mui/material';
 import { FC, useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { IPost, IPostInput } from '../../types/feed';
@@ -10,8 +10,9 @@ import { getFileExt } from '../../utils';
 import axios from 'axios';
 import { AuthContext } from '../../Context';
 import { Public, Title, Link, Notes } from '@mui/icons-material';
-import { createButtonStyle } from '../../ui/app/styles';
+import { createButtonStyle, errorButtonStyle } from '../../ui/app/styles';
 import { config } from '../../config/config';
+import { LoadingButton } from '@mui/lab';
 
 export const Submit: FC = () => {
 	const { user } = useContext(AuthContext);
@@ -133,21 +134,23 @@ export const Submit: FC = () => {
 				</Grid>
 				<Grid item xs={12}>
 					<Stack spacing={2} direction="row">
-						<Button
-							variant="outlined"
-							onClick={handleSubmit}
+						<LoadingButton
 							sx={createButtonStyle}
+							onClick={handleSubmit}
+							loading={isLoading}
+							loadingPosition="end"
+							variant="contained"
 						>
 							{isEdit ? 'Edit' : 'Post'}
-						</Button>
-						<Button
+						</LoadingButton>
+						<LoadingButton
 							variant="outlined"
 							color="error"
-							sx={{ borderRadius: '2rem' }}
+							sx={errorButtonStyle}
 							onClick={() => navigate('/')}
 						>
 							Cancel
-						</Button>
+						</LoadingButton>
 					</Stack>
 				</Grid>
 			</Grid>

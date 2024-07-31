@@ -16,6 +16,7 @@ import { FieldValidation } from '../../types/Auth';
 import { getFileExt } from '../../utils';
 import { uploadPhoto } from '../../services/file-service';
 import { IUser } from '../../types/user.types';
+import { LoadingPage } from '../../ui';
 
 export const ProfilePage: FC = () => {
 	const currentUser = useContext(AuthContext).user;
@@ -44,7 +45,7 @@ export const ProfilePage: FC = () => {
 	}, [currentUser, navigate]);
 
 	if (!currentUser) {
-		return <div>Loading...</div>;
+		return <LoadingPage/>
 	}
 
 	const handleEditMode = () => {
