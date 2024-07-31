@@ -1,5 +1,5 @@
-import { Button, Grid, Stack, Typography } from '@mui/material';
-import { FC, useState, useEffect, useMemo, useContext } from 'react';
+import { Grid, Stack, Typography } from '@mui/material';
+import { FC, useState, useEffect, useContext, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { IPost, IPostInput } from '../../types/feed';
 import { createPost, updatePost } from '../../services/posts.service';
@@ -9,8 +9,10 @@ import { uploadPostImage } from '../../services/file-service';
 import { getFileExt } from '../../utils';
 import axios from 'axios';
 import { AuthContext } from '../../Context';
+import { createButtonStyle, errorButtonStyle } from '../../ui/app/styles';
+import { config } from '../../config/config.js';
+import { LoadingButton } from '@mui/lab';
 import { Public, Title, Link, Notes, Height } from '@mui/icons-material';
-import { createButtonStyle } from '../../ui/app/styles';
 import Select, {
 	SingleValue,
 	components,
@@ -18,17 +20,18 @@ import Select, {
 	DropdownIndicatorProps,
 	ControlProps,
 } from 'react-select';
-import { Icon, InputAdornment } from '@mui/material';
+import { InputAdornment } from '@mui/material';
 import '../../ui/PostMenu/postStyles.css';
 import countryList from 'react-select-country-list';
-import { config } from '../../config/config';
 import { FieldValidation } from '../../types/validation';
+import { ReturnToHomePage } from '../../ui/app/GoToHomePage.js';
 
 interface OptionType {
 	value: string;
 	label: string;
 }
 export const Submit: FC = () => {
+	const { navigateToHomePage } = ReturnToHomePage();
 	const { user } = useContext(AuthContext);
 	const navigate = useNavigate();
 	const { state }: { state: { post: IPost } } = useLocation();
@@ -95,7 +98,7 @@ export const Submit: FC = () => {
 				? { isValid: true, errorText: '' }
 				: { isValid: false, errorText: '' },
 		);
-		setCountry(selectedOption ? selectedOption.value : null);
+		setCountry(selectedOption ? selectedOption.value : '');
 	};
 
 	const selectedCountry = useMemo(
@@ -114,14 +117,14 @@ export const Submit: FC = () => {
 					imageInfo!,
 					user?._id + '.' + getFileExt(imageInfo?.name),
 				);
-				newImgUrl = await uploadPostImage(formData);
+				newImgUrl = `${config.DOMAIN_BASE}/posts/${await uploadPostImage(formData)}`;
 			}
 			const postInput: IPostInput = {
 				title,
 				country,
 				source,
 				body,
-				imgUrl: `${config.DOMAIN_BASE}/posts/${newImgUrl}`,
+				imgUrl: newImgUrl,
 				userId: user?._id ?? '',
 			};
 			const postId: string = state?.post
@@ -160,7 +163,7 @@ export const Submit: FC = () => {
 			formIsValid += 1;
 		}
 
-		if (!imageInfo) {
+		if (!(imageInfo || imgUrl)) {
 			setImageValid(false);
 		} else {
 			setImageValid(true);
@@ -222,6 +225,14 @@ export const Submit: FC = () => {
 					</Typography>
 				</Grid>
 				<Grid item xs={12}>
+					<DropFileInput
+						src={imgUrl}
+						onChange={setImageInfo}
+						error={!imageValid}
+						className="post-style"
+					/>
+				</Grid>
+				<Grid item xs={12}>
 					<TextInput
 						title="Title"
 						value={title}
@@ -277,29 +288,23 @@ export const Submit: FC = () => {
 					/>
 				</Grid>
 				<Grid item xs={12}>
-					<DropFileInput
-						src={imgUrl}
-						onChange={setImageInfo}
-						error={!imageValid}
-					/>
-				</Grid>
-				<Grid item xs={12}>
 					<Stack spacing={2} direction="row">
-						<Button
-							variant="outlined"
-							onClick={validateForm}
+						<LoadingButton
 							sx={createButtonStyle}
+							onClick={validateForm}
+							loading={isLoading}
+							variant="contained"
 						>
 							{isEdit ? 'Edit' : 'Post'}
-						</Button>
-						<Button
+						</LoadingButton>
+						<LoadingButton
 							variant="outlined"
 							color="error"
-							sx={{ borderRadius: '2rem' }}
-							onClick={() => navigate('/')}
+							sx={errorButtonStyle}
+							onClick={navigateToHomePage}
 						>
 							Cancel
-						</Button>
+						</LoadingButton>
 					</Stack>
 				</Grid>
 			</Grid>

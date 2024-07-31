@@ -13,7 +13,7 @@ import { useNavigate, useParams } from 'react-router';
 import { deletePost, fetchPost } from '../../services/posts.service';
 import { fetchUser } from '../../services/users.service';
 import { IUser } from '../../types/user.types';
-import { linkStyle } from '../../ui/FeedItem/styles';
+import { linkStyle, bodyStyle } from '../../ui/FeedItem/styles';
 import { MoreHoriz } from '@mui/icons-material';
 import { Comments } from '../../ui/Comments/Comments';
 import { UserTitle } from '../../ui/UserTitle/UserTitle';
@@ -22,6 +22,7 @@ import { postCardStyle, postImageStyle } from './styles';
 import { AsyncImage } from 'loadable-image';
 import { PostContext } from '../../Context';
 import { AuthContext } from '../../Context';
+import { LoadingPage } from '../../ui';
 
 export const Post: FC = () => {
 	const currentUser = useContext(AuthContext).user;
@@ -59,6 +60,8 @@ export const Post: FC = () => {
 		navigate('/');
 	};
 
+	if (isLoading) return <LoadingPage/>
+
 	return (
 		<PostContext.Provider value={{ post, setPost }}>
 			<Grid
@@ -66,68 +69,72 @@ export const Post: FC = () => {
 				justifyContent={'center'}
 				sx={{ paddingTop: '2rem', color: 'white' }}
 			>
-				<Grid item lg={8} xl={5}>
-					{isLoading ? (
-						<p>Loading...</p>
-					) : (
-						<>
-							{!post ? (
-								<h5>No Post Found</h5>
-							) : (
-								<Grid container>
-									<Grid item xs={11}>
-										{user && <UserTitle user={user} timestamp={post.created} />}
-									</Grid>
-									<Grid item container xs={1} justifyContent={'end'}>
-										<IconButton
-											ref={anchorRef}
-											id="composition-button"
-											aria-controls={open ? 'composition-menu' : undefined}
-											aria-expanded={open ? 'true' : undefined}
-											aria-haspopup="true"
-											onClick={handleToggle}
-											sx={{ color: 'white' }}
-										>
-											<MoreHoriz />
-										</IconButton>
-									</Grid>
-									<Grid item xs={12}>
-										<Typography variant="h5">{post.title}</Typography>
-									</Grid>
-									<Grid item xs={12}>
-										<Card variant={'outlined'} sx={postCardStyle}>
-											<CardMedia image={post.imgUrl}>
-												<AsyncImage
-													src={post.imgUrl}
-													style={postImageStyle}
-												/>
-											</CardMedia>
-											<CardActionArea>
-												{post.source && (
-													<Typography variant="subtitle1">
-														<Link
-															href={post.source}
-															target="_blank"
-															rel="noopener"
-															sx={{
-																...linkStyle,
-																padding: '10px',
-															}}
-														>
-															{post.source}
-														</Link>
-													</Typography>
-												)}
-											</CardActionArea>
-										</Card>
-									</Grid>
-									<Grid item xs={12}>
-										<Comments comments={post.comments || []} />
-									</Grid>
+				<Grid item lg={8} xl={6}>
+					<>
+						{!post ? (
+							<h5>No Post Found</h5>
+						) : (
+							<Grid container>
+								<Grid item xs={11}>
+									{user && <UserTitle user={user} timestamp={post.created} />}
 								</Grid>
-							)}
-						</>
-					)}
+								<Grid item container xs={1} justifyContent={'end'}>
+								{post?.userId === currentUser?._id && (
+									<IconButton
+										ref={anchorRef}
+										id="composition-button"
+										aria-controls={open ? 'composition-menu' : undefined}
+										aria-expanded={open ? 'true' : undefined}
+										aria-haspopup="true"
+										onClick={handleToggle}
+										sx={{ color: 'white' }}
+									>
+										<MoreHoriz />
+									</IconButton>
+								)}
+								</Grid>
+								<Grid item xs={12}>
+									<Typography variant="h5">{post.title}</Typography>
+								</Grid>
+								<Grid item xs={12}>
+									<Card variant={'outlined'} sx={postCardStyle}>
+										<CardMedia image={post.imgUrl}>
+											<AsyncImage
+												src={post.imgUrl}
+												style={postImageStyle}
+											/>
+										</CardMedia>
+										<CardActionArea>
+											{post.source && (
+												<Typography variant="subtitle1">
+													<Link
+														href={post.source}
+														target="_blank"
+														rel="noopener"
+														sx={{
+															...linkStyle,
+															padding: '10px',
+														}}
+													>
+														Click To Go To Source
+													</Link>
+												</Typography>
+											)}
+										</CardActionArea>
+										<Typography 
+											variant="h6"
+											sx={bodyStyle}
+										>
+											{post.body}
+										</Typography>
+									</Card>
+								</Grid>
+								<Grid item xs={12}>
+									<Comments comments={post.comments || []} />
+								</Grid>
+							</Grid>
+						)}
+					</>
 				</Grid>
 			</Grid>
 			{post?.userId === currentUser?._id && (

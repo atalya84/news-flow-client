@@ -1,11 +1,10 @@
 import { FC, useContext, useEffect, useState } from 'react';
 import DropFileInput from '../../ui/Auth/ImageInput';
 import { AuthContext } from '../../Context';
-import { config } from '../../config/config';
 import GradientRectangle from '../../ui/Auth/GradientRectangle';
 import './ProfilePage.css';
 import { Grid } from '@mui/material';
-import { PopularPosts } from '../myPosts/PopularPosts';
+import { PopularPosts } from './PopularPosts';
 import { LoadingButton } from '@mui/lab';
 import { editUser, signOut } from '../../services/auth.service';
 import { logoutButton, editButton } from './styles';
@@ -17,6 +16,8 @@ import { FieldValidation } from '../../types/validation';
 import { getFileExt } from '../../utils';
 import { uploadPhoto } from '../../services/file-service';
 import { IUser } from '../../types/user.types';
+import { LoadingPage } from '../../ui';
+import { config } from '../../config/config';
 
 export const ProfilePage: FC = () => {
 	const currentUser = useContext(AuthContext).user;
@@ -51,7 +52,7 @@ export const ProfilePage: FC = () => {
 	}, [currentUser, navigate]);
 
 	if (!currentUser) {
-		return <div>Loading...</div>;
+		return <LoadingPage/>
 	}
 
 	const handleEditMode = () => {
@@ -89,7 +90,7 @@ export const ProfilePage: FC = () => {
 					_id: currentUser._id,
 					email: email,
 					name: name,
-					imgUrl: imageUrl,
+					imgUrl: `${config.DOMAIN_BASE}/profiles/${imageUrl}`,
 				};
 			} else {
 				alert('There was an error when uploading your profile picture');
@@ -146,6 +147,8 @@ export const ProfilePage: FC = () => {
 
 		if (shouldUpdateUser || imageInfo) {
 			handleEditUser();
+		} else {
+			handleEditMode()
 		}
 	};
 
@@ -197,10 +200,17 @@ export const ProfilePage: FC = () => {
 							sx={editButton}
 							onClick={validateForm}
 							loading={loading}
-							loadingPosition="end"
 							variant="contained"
 						>
 							save
+						</LoadingButton>
+						
+						<LoadingButton
+							sx={logoutButton}
+							onClick={handleEditMode}
+							variant="contained"
+						>
+							Cancel
 						</LoadingButton>
 					</>
 				) : (
@@ -212,21 +222,20 @@ export const ProfilePage: FC = () => {
 						<LoadingButton
 							sx={editButton}
 							onClick={handleEditMode}
-							loadingPosition="end"
 							variant="contained"
 						>
 							Edit
 						</LoadingButton>
+						
+						<LoadingButton
+							sx={logoutButton}
+							onClick={signOut}
+							variant="contained"
+						>
+							Log Out
+						</LoadingButton>
 					</>
 				)}
-				<LoadingButton
-					sx={logoutButton}
-					onClick={signOut}
-					loadingPosition="end"
-					variant="contained"
-				>
-					Log Out
-				</LoadingButton>
 			</Grid>
 			<Grid item xs={4}>
 				<div className="popular-container">

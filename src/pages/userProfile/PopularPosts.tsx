@@ -1,5 +1,5 @@
 import { FC, useContext, useEffect, useState } from 'react';
-import FeedItem from '../../ui/FeedItem/FeedItem';
+import ReducedFeedItem from '../../ui/FeedItem/ReducedFeedItem';
 import { IPost } from '../../types/feed';
 import { Grid, Typography } from '@mui/material';
 import { fetchPopPosts } from '../../services/posts.service';
@@ -12,7 +12,7 @@ export const PopularPosts: FC = () => {
 
 	useEffect(() => {
 		setIsLoading(true);
-		fetchPopPosts(user!._id)
+		fetchPopPosts(user!._id!)
 			.then(setPosts)
 			.catch(console.error)
 			.finally(() => setIsLoading(false));
@@ -30,7 +30,7 @@ export const PopularPosts: FC = () => {
 						{'No Posts Found :('}
 					</Typography>
 				) : (
-					posts.map((post, index) => <FeedItem post={post} key={index} />)
+					posts.map((post, index) => <ReducedFeedItem post={post} key={index} />)
 				)}
 			</Grid>
 		</Grid>
